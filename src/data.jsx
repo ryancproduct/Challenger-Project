@@ -1158,6 +1158,7 @@ const APP_ACTIVITY_TYPES={
   escalation:{icon:"bolt",color:T.amber,label:"Escalation"},
   workflow:{icon:"workflow",color:T.highlight,label:"Workflow"},
   connector:{icon:"connector",color:T.violet,label:"Sync"},
+  agent:{icon:"sparkle",color:T.accent,label:"Agent"},
 };
 
 const APP_TABLE_MAP={
