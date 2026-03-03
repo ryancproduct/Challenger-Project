@@ -1054,120 +1054,6 @@ const REGISTER_CATALOG={
   ],
 };
 
-/* ═══ WORKFLOW STEP TEMPLATES ═══ */
-/* Step types: check (checkbox), text (free text), number (numeric input), select (dropdown), passfail, photo, sign */
-const WORKFLOW_STEP_TEMPLATES={
-  "wf-quality-audit":{name:"Quality Inspection Checklist",steps:[
-    {id:"s1",type:"check",label:"PPE worn by all personnel on line",required:true},
-    {id:"s2",type:"check",label:"Work area clean and free of debris",required:true},
-    {id:"s3",type:"passfail",label:"Raw material labels match batch records"},
-    {id:"s4",type:"number",label:"Ambient temperature (°C)",placeholder:"e.g. 22",unit:"°C",min:15,max:35},
-    {id:"s5",type:"select",label:"Line status",options:["Running","Idle","Changeover","Down"]},
-    {id:"s6",type:"check",label:"Calibration stickers current on all gauges",required:true},
-    {id:"s7",type:"passfail",label:"Product dimensions within tolerance"},
-    {id:"s8",type:"text",label:"Observations / notes",placeholder:"Any findings to note...",required:false},
-    {id:"s9",type:"sign",label:"Inspector sign-off"},
-  ]},
-  "wf-opening-checklist":{name:"Opening Checklist",steps:[
-    {id:"s1",type:"check",label:"Floors swept and mopped",required:true},
-    {id:"s2",type:"check",label:"Restrooms clean and stocked",required:true},
-    {id:"s3",type:"number",label:"Walk-in cooler temp (°F)",placeholder:"e.g. 38",unit:"°F",min:32,max:41},
-    {id:"s4",type:"number",label:"Walk-in freezer temp (°F)",placeholder:"e.g. -2",unit:"°F",min:-10,max:5},
-    {id:"s5",type:"passfail",label:"All equipment powered on and functional"},
-    {id:"s6",type:"check",label:"Prep stations sanitised",required:true},
-    {id:"s7",type:"check",label:"Cash register counted and verified",required:true},
-    {id:"s8",type:"select",label:"Staffing level",options:["Full","One short","Two short","Critical"]},
-    {id:"s9",type:"text",label:"Notes for shift",placeholder:"Anything to flag...",required:false},
-    {id:"s10",type:"sign",label:"Manager sign-off"},
-  ]},
-  "wf-pre-trip":{name:"Pre-Trip Vehicle Inspection",steps:[
-    {id:"s1",type:"passfail",label:"Engine oil level"},
-    {id:"s2",type:"passfail",label:"Coolant level"},
-    {id:"s3",type:"number",label:"Tyre pressure — front left (PSI)",placeholder:"e.g. 105",unit:"PSI",min:80,max:130},
-    {id:"s4",type:"number",label:"Tyre pressure — front right (PSI)",placeholder:"e.g. 105",unit:"PSI",min:80,max:130},
-    {id:"s5",type:"passfail",label:"All lights and indicators functional"},
-    {id:"s6",type:"passfail",label:"Brakes — pedal firm, no unusual noise"},
-    {id:"s7",type:"check",label:"Fire extinguisher present and charged",required:true},
-    {id:"s8",type:"check",label:"First aid kit present",required:true},
-    {id:"s9",type:"select",label:"Vehicle condition",options:["Good","Minor issues","Needs attention","Unsafe"]},
-    {id:"s10",type:"text",label:"Notes / defects",placeholder:"Describe any issues...",required:false},
-    {id:"s11",type:"sign",label:"Driver sign-off"},
-  ]},
-  "wf-observation":{name:"Raise Observation",steps:[
-    {id:"s1",type:"select",label:"Observation type",options:["Safety","Quality","Maintenance","Environmental","Positive"]},
-    {id:"s2",type:"text",label:"What did you observe?",placeholder:"Describe what you saw...",required:true},
-    {id:"s3",type:"select",label:"Severity",options:["Low — informational","Medium — needs attention","High — immediate action required"]},
-    {id:"s4",type:"text",label:"Location / area",placeholder:"e.g. Line 3, Loading dock B...",required:false},
-    {id:"s5",type:"photo",label:"Photo (optional)"},
-    {id:"s6",type:"sign",label:"Observer sign-off"},
-  ]},
-  "wf-issue-report":{name:"Log Issue",steps:[
-    {id:"s1",type:"text",label:"What happened?",placeholder:"Describe the issue...",required:true},
-    {id:"s2",type:"select",label:"Severity",options:["Minor — no immediate risk","Moderate — needs follow-up","Major — safety or compliance risk","Critical — stop work"]},
-    {id:"s3",type:"select",label:"Category",options:["Equipment failure","Safety incident","Quality defect","Near miss","Environmental","Process deviation"]},
-    {id:"s4",type:"text",label:"Who is involved?",placeholder:"Names or roles affected...",required:false},
-    {id:"s5",type:"text",label:"Immediate action taken",placeholder:"What did you do to address it?",required:false},
-    {id:"s6",type:"photo",label:"Photo evidence"},
-    {id:"s7",type:"sign",label:"Reporter sign-off"},
-  ]},
-  "_default":{name:"Workflow",steps:[
-    {id:"s1",type:"check",label:"Area inspected and clear",required:true},
-    {id:"s2",type:"check",label:"Equipment functioning correctly",required:true},
-    {id:"s3",type:"passfail",label:"Conditions within acceptable range"},
-    {id:"s4",type:"text",label:"Observations",placeholder:"Any notes...",required:false},
-    {id:"s5",type:"sign",label:"Sign-off"},
-  ]},
-};
-
-/* ═══ TASK SEEDS ═══ */
-const TASK_SEEDS={
-  manufacturing:[
-    {id:"t-mfg-1",type:"inspection",title:"Morning Quality Audit",description:"Daily quality inspection for Lines 1-3",appId:"quality-mgmt",workflowId:"wf-quality-audit",priority:"High",dueTime:"08:00",assignee:"Line Supervisor"},
-    {id:"t-mfg-2",type:"inspection",title:"Supplier Receiving Check",description:"Incoming raw materials QC — Dock B delivery",appId:"quality-mgmt",workflowId:"wf-supplier-receiving",priority:"High",dueTime:"09:30",assignee:"QC Inspector"},
-    {id:"t-mfg-3",type:"task",title:"Calibrate temp sensors",description:"Monthly calibration check for Line 3 sensors",appId:"mfg-maintenance",workflowId:"wf-pm-routine",priority:"Medium",dueTime:"10:00",assignee:"Maintenance Tech"},
-    {id:"t-mfg-4",type:"inspection",title:"Safety walkthrough",description:"Weekly EHS floor inspection",appId:"safety-compliance",workflowId:"wf-incident-report",priority:"High",dueTime:"11:00",assignee:"Safety Officer"},
-    {id:"t-mfg-5",type:"task",title:"Shift handover prep",description:"Document Line 2 status for afternoon crew",appId:"mfg-shift-mgmt",workflowId:"wf-shift-handover",priority:"Medium",dueTime:"14:00",assignee:"Line Supervisor"},
-    {id:"t-mfg-6",type:"task",title:"Update PM schedule",description:"Mark completed PMs and reschedule overdue items",appId:"mfg-maintenance",workflowId:"wf-pm-routine",priority:"Low",dueTime:"15:00",assignee:"Maintenance Tech"},
-    {id:"t-mfg-7",type:"inspection",title:"Changeover verification",description:"Verify Line 1 changeover meets specs",appId:"mfg-shift-mgmt",workflowId:"wf-changeover",priority:"High",dueTime:"06:30",assignee:"Line Supervisor"},
-  ],
-  qsr:[
-    {id:"t-qsr-1",type:"inspection",title:"Opening Checklist",description:"Store opening safety and readiness check",appId:"food-safety",workflowId:"wf-opening-checklist",priority:"High",dueTime:"06:00",assignee:"Shift Manager"},
-    {id:"t-qsr-2",type:"inspection",title:"Temperature Log",description:"Hourly fridge and freezer temperature check",appId:"food-safety",workflowId:"wf-temp-log",priority:"High",dueTime:"07:00",assignee:"Team Member"},
-    {id:"t-qsr-3",type:"task",title:"Restock front counter",description:"Check and restock packaging, napkins, condiments",appId:"qsr-shift-mgmt",workflowId:"wf-line-check",priority:"Medium",dueTime:"08:00",assignee:"Team Member"},
-    {id:"t-qsr-4",type:"inspection",title:"Line check & positioning",description:"Verify line positions and prep levels",appId:"qsr-shift-mgmt",workflowId:"wf-line-check",priority:"High",dueTime:"11:00",assignee:"Shift Manager"},
-    {id:"t-qsr-5",type:"task",title:"Waste tracking log",description:"Record morning waste and discards",appId:"qsr-inventory-mgmt",workflowId:"wf-waste-tracking",priority:"Medium",dueTime:"10:00",assignee:"Team Lead"},
-    {id:"t-qsr-6",type:"task",title:"New crew training check-in",description:"15-min check-in with trainee on station 2",appId:"qsr-training-ops",workflowId:"wf-crew-onboarding",priority:"Low",dueTime:"13:00",assignee:"Shift Manager"},
-  ],
-  "transport-logistics":[
-    {id:"t-tl-1",type:"inspection",title:"Pre-trip vehicle inspection",description:"DOT-compliant pre-trip for Unit 2847",appId:"fleet-ops",workflowId:"wf-pre-trip",priority:"High",dueTime:"05:30",assignee:"Driver"},
-    {id:"t-tl-2",type:"inspection",title:"Fuel audit",description:"Reconcile fuel card transactions vs GPS mileage",appId:"fleet-ops",workflowId:"wf-fuel-audit",priority:"Medium",dueTime:"09:00",assignee:"Fleet Coordinator"},
-    {id:"t-tl-3",type:"task",title:"Dock receiving check-in",description:"Verify inbound shipment at Dock 4",appId:"dock-ops",workflowId:"wf-dock-receiving",priority:"High",dueTime:"07:00",assignee:"Dock Worker"},
-    {id:"t-tl-4",type:"inspection",title:"POD capture — Route 12",description:"Capture proof-of-delivery photos for morning route",appId:"delivery-tracking",workflowId:"wf-pod-capture",priority:"High",dueTime:"12:00",assignee:"Driver"},
-    {id:"t-tl-5",type:"task",title:"Driver debrief",description:"End-of-shift debrief and incident notes",appId:"fleet-ops",workflowId:"wf-driver-debrief",priority:"Medium",dueTime:"16:00",assignee:"Driver"},
-    {id:"t-tl-6",type:"task",title:"Route plan review",description:"Review tomorrow's route assignments and load plans",appId:"route-ops",workflowId:"wf-route-plan",priority:"Low",dueTime:"15:00",assignee:"Dispatcher"},
-  ],
-};
-
-/* ═══ ACTIVITY SEEDS ═══ */
-const ACTIVITY_SEEDS={
-  manufacturing:[
-    {id:"a-mfg-1",taskId:"t-mfg-prev-1",timestamp:"07:45",type:"completed",title:"Morning Quality Audit",appName:"Quality Management",appColor:T.violet,goalNames:["Reduce Defect Rate","Maintain Regulatory Compliance"],result:{score:94,summary:"All lines passed. Minor finding on Line 3 — bearing temp 2°F above baseline."},aiInsight:"Bearing temp on Line 3 has trended up 4°F over the past week. Recommend PM inspection."},
-    {id:"a-mfg-2",taskId:"t-mfg-prev-2",timestamp:"06:50",type:"completed",title:"Changeover verification",appName:"Shift Management",appColor:T.amber,goalNames:["Improve Throughput","Reduce Changeover Time"],result:{score:100,summary:"Line 1 changeover completed in 18 min (target: 22 min)."},aiInsight:"Changeover time improved 12% this week. New SOP is working."},
-    {id:"a-mfg-3",taskId:"t-mfg-prev-3",timestamp:"Yesterday 16:20",type:"completed",title:"PM routine — Line 2 conveyor",appName:"Maintenance",appColor:T.rose,goalNames:["Reduce Unplanned Downtime"],result:{score:87,summary:"Belt tension adjusted. Lubrication completed. Next PM in 14 days."},aiInsight:null},
-    {id:"a-mfg-4",taskId:null,timestamp:"Yesterday 14:05",type:"issue_raised",title:"Hydraulic leak on Press 4",appName:"Safety & Compliance",appColor:T.rose,goalNames:["Reduce Workplace Injuries"],result:{score:null,summary:"Reported by floor operator. Area cordoned off. Maintenance dispatched."},aiInsight:"This is the 3rd hydraulic issue on Press 4 in 60 days. Escalate to engineering review."},
-  ],
-  qsr:[
-    {id:"a-qsr-1",taskId:"t-qsr-prev-1",timestamp:"06:15",type:"completed",title:"Opening Checklist",appName:"Food Safety",appColor:T.green,goalNames:["Maintain Food Safety Compliance"],result:{score:100,summary:"All stations clean. Equipment verified. Temps in range."},aiInsight:"Perfect opening score 3 days running."},
-    {id:"a-qsr-2",taskId:"t-qsr-prev-2",timestamp:"Yesterday 19:30",type:"completed",title:"Closing inspection",appName:"Food Safety",appColor:T.green,goalNames:["Maintain Food Safety Compliance","Improve Audit Scores"],result:{score:91,summary:"Walk-in cooler temp 1°F above threshold at close. Re-checked and stabilised."},aiInsight:"Walk-in cooler has flagged twice this week. Schedule maintenance check."},
-    {id:"a-qsr-3",taskId:null,timestamp:"Yesterday 12:15",type:"issue_raised",title:"Drive-thru speaker crackling",appName:"Restaurant Ops",appColor:T.highlight,goalNames:["Improve Drive-Thru Speed"],result:{score:null,summary:"Intermittent audio issues affecting order accuracy. Workaround: repeat orders."},aiInsight:null},
-  ],
-  "transport-logistics":[
-    {id:"a-tl-1",taskId:"t-tl-prev-1",timestamp:"05:50",type:"completed",title:"Pre-trip inspection — Unit 2847",appName:"Fleet Ops",appColor:T.amber,goalNames:["Maintain Vehicle Uptime","Ensure Driver Safety"],result:{score:100,summary:"All systems green. Tyre pressure nominal. Lights functional."},aiInsight:null},
-    {id:"a-tl-2",taskId:"t-tl-prev-2",timestamp:"Yesterday 16:40",type:"completed",title:"POD capture — Route 8",appName:"Delivery Tracking",appColor:T.highlight,goalNames:["Achieve POD Compliance","Improve On-Time Delivery"],result:{score:96,summary:"11/12 deliveries completed on time. 1 rescheduled (customer request)."},aiInsight:"Route 8 OTD improved to 96% this week, up from 89% last week."},
-    {id:"a-tl-3",taskId:null,timestamp:"Yesterday 11:20",type:"issue_raised",title:"Damaged pallet — Dock 4",appName:"Dock Ops",appColor:T.rose,goalNames:["Reduce Accuracy & Damage Claims"],result:{score:null,summary:"Inbound shipment from Supplier X — 2 pallets with water damage. Photos captured."},aiInsight:"3rd damage claim from Supplier X this quarter. Flag for supplier review."},
-  ],
-};
-
 /* ═══ APP DETAIL DATA ═══ */
 const APP_ACTIVITY_TYPES={
   inspection:{icon:"shield",color:T.green,label:"Inspection"},
@@ -2653,8 +2539,8 @@ function ChatOnboarding({onComplete,setIndustry,setPersona,setSelectedGoals,setF
       {type:"text",content:"First \u2014 what's your name and company?"},
     ]},
     {id:"u-pre-1",role:"user",text:"Michael, RC Marine Ops"},
+    {id:"card-pre",role:"company-card",name:"Michael",company:"RC Marine Ops",website:"rcmarineops.com",logo:"/RCMarineLogo.png"},
     {id:"ai-pre-2",role:"ai",parts:[
-      {type:"company-card",name:"Michael",company:"RC Marine Ops",website:"rcmarineops.com"},
       {type:"text",content:"Is that right?"},
     ]},
     {id:"u-pre-2",role:"user",text:"That's correct"},
@@ -2892,19 +2778,6 @@ function ChatOnboarding({onComplete,setIndustry,setPersona,setSelectedGoals,setF
       </div>;
     }
 
-    if(part.type==="company-card"){
-      return<div key={idx} style={{display:"flex",alignItems:"center",gap:14,padding:"14px 16px",borderRadius:14,background:`${T.accent}06`,border:`1px solid ${T.border}`,marginTop:4,marginBottom:2}}>
-        <div style={{width:44,height:44,borderRadius:12,background:T.accent,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,boxShadow:"0 2px 8px rgba(28,25,23,0.1)"}}>
-          {IC.home("#fff",18)}
-        </div>
-        <div style={{flex:1,minWidth:0}}>
-          <div style={{fontSize:15,fontWeight:600,letterSpacing:"-0.02em",fontFamily:T.serif}}>Hi, {part.name}!</div>
-          <div style={{fontSize:12.5,color:T.textSecondary,marginTop:2}}>{part.company}</div>
-          <div style={{fontSize:11,color:T.textTertiary,fontFamily:T.mono,marginTop:2}}>{part.website}</div>
-        </div>
-      </div>;
-    }
-
     if(part.type==="action-btns"){
       const disabled=step!==part.key;
       return<div key={idx} style={{display:"flex",gap:8,marginTop:8,flexWrap:"wrap"}}>
@@ -2988,6 +2861,25 @@ function ChatOnboarding({onComplete,setIndustry,setPersona,setSelectedGoals,setF
             if(msg.role==="user"){
               return<div key={msg.id} className="cob-user">
                 <div className="cob-user-bubble">{msg.text}</div>
+              </div>;
+            }
+            if(msg.role==="company-card"){
+              return<div key={msg.id} style={{animation:"fadeInUp 0.4s cubic-bezier(0.4,0,0.2,1)",maxWidth:380,width:"100%",alignSelf:"center"}}>
+                <div style={{background:T.surface,border:`1px solid ${T.border}`,borderRadius:20,padding:"22px 22px 18px",boxShadow:"0 4px 24px rgba(28,25,23,0.08), 0 1px 4px rgba(28,25,23,0.04)",overflow:"hidden",position:"relative"}}>
+                  <div style={{position:"absolute",top:0,left:0,right:0,height:4,background:`linear-gradient(90deg, ${T.accent}, ${T.green})`}}/>
+                  <div style={{display:"flex",alignItems:"center",gap:16,marginTop:4}}>
+                    <img src={msg.logo} alt={msg.company} style={{width:52,height:52,borderRadius:14,objectFit:"cover",border:`1px solid ${T.border}`,flexShrink:0}}/>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:11,fontFamily:T.mono,color:T.textTertiary,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:3}}>Company found</div>
+                      <div style={{fontSize:16,fontWeight:600,letterSpacing:"-0.02em",fontFamily:T.serif}}>{msg.company}</div>
+                      <div style={{fontSize:11.5,color:T.textTertiary,fontFamily:T.mono,marginTop:2}}>{msg.website}</div>
+                    </div>
+                  </div>
+                  <div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${T.borderSubtle}`,display:"flex",alignItems:"center",gap:8}}>
+                    <div style={{fontSize:14.5,fontWeight:500,letterSpacing:"-0.01em"}}>Hi, {msg.name}!</div>
+                    <div style={{fontSize:13,color:T.textTertiary}}>Welcome to Flows</div>
+                  </div>
+                </div>
               </div>;
             }
             return<div key={msg.id} className="cob-ai">
@@ -7375,199 +7267,11 @@ function QuickStatsWidget({mode,industry}){
   </div>;
 }
 
-/* ═══ WIDGET: GOALS SUMMARY ═══ */
-function GoalsSummaryWidget({mode,industry,selectedGoals,customGoals,installedApps}){
-  const allGoals=getGoalsByIndustry(industry);
-  const systemGoals=allGoals.filter(g=>(selectedGoals||[]).includes(g.id));
-  const custom=(customGoals||[]);
-  const combined=[...systemGoals,...custom];
-  const total=combined.length;
-
-  if(total===0){
-    if(mode==="pinned") return<div>
-      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
-        <div style={{width:32,height:32,borderRadius:9,background:T.highlightSoft,display:"flex",alignItems:"center",justifyContent:"center"}}>{IC.target(T.highlight)}</div>
-        <div><div style={{fontSize:13,fontWeight:600,letterSpacing:"-0.01em"}}>Goals</div><div style={{fontSize:11,color:T.textTertiary,marginTop:1}}>No goals set</div></div>
-      </div>
-      <div style={{fontSize:12,color:T.textTertiary,textAlign:"center",padding:"16px 0"}}>Complete onboarding to set goals</div>
-    </div>;
-    return<div style={{fontSize:12,color:T.textTertiary,textAlign:"center",padding:16}}>No goals configured yet.</div>;
-  }
-
-  /* Category breakdown */
-  const catMap={};
-  const getCatColor=(cat)=>{
-    if(!cat) return T.accent;
-    const l=cat.toLowerCase();
-    if(l.includes("quality")) return T.violet;
-    if(l.includes("safety")) return T.rose;
-    if(l.includes("maintenance")||l.includes("reliability")||l.includes("fleet")) return T.amber;
-    if(l.includes("supply")||l.includes("inventory")||l.includes("warehouse")) return T.green;
-    if(l.includes("compliance")||l.includes("delivery")||l.includes("visibility")) return T.highlight;
-    if(l==="custom") return T.pink;
-    if(l.includes("cost")||l.includes("revenue")||l.includes("profitability")) return T.amber;
-    if(l.includes("workforce")||l.includes("labor")) return T.violet;
-    if(l.includes("speed")||l.includes("experience")) return T.highlight;
-    if(l.includes("drive")||l.includes("digital")) return T.rose;
-    if(l.includes("production")||l.includes("throughput")) return T.green;
-    if(l.includes("route")||l.includes("optimization")) return T.violet;
-    if(l.includes("multi-unit")||l.includes("franchise")) return T.amber;
-    return T.accent;
-  };
-  const getCatSoft=(cat)=>{
-    const c=getCatColor(cat);
-    if(c===T.violet) return T.violetSoft;
-    if(c===T.rose) return T.roseSoft;
-    if(c===T.amber) return T.amberSoft;
-    if(c===T.green) return T.greenSoft;
-    if(c===T.highlight) return T.highlightSoft;
-    if(c===T.pink) return T.pinkSoft;
-    return T.accentSoft;
-  };
-  combined.forEach(g=>{
-    const cat=g.category||"Other";
-    if(!catMap[cat]) catMap[cat]={count:0,color:getCatColor(cat),soft:getCatSoft(cat)};
-    catMap[cat].count++;
-  });
-  const cats=Object.entries(catMap).sort((a,b)=>b[1].count-a[1].count);
-
-  /* App counts per goal */
-  const installed=installedApps||[];
-  const getAppCount=(gId)=>getAppsForGoal(gId).length;
-  const getInstalledCount=(gId)=>getAppsForGoal(gId).filter(a=>installed.includes(a.id)).length;
-
-  if(mode==="pinned") return<div>
-    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
-      <div style={{display:"flex",alignItems:"center",gap:8}}>
-        <div style={{width:32,height:32,borderRadius:9,background:T.highlightSoft,display:"flex",alignItems:"center",justifyContent:"center"}}>{IC.target(T.highlight)}</div>
-        <div onClick={()=>{window.location.hash="#goals";}} style={{cursor:"pointer"}}><div style={{fontSize:13,fontWeight:600,letterSpacing:"-0.01em"}}>Your Goals</div><div style={{fontSize:11,color:T.textTertiary,marginTop:1}}>{total} goal{total!==1?"s":""} · {cats.length} categor{cats.length!==1?"ies":"y"}</div></div>
-      </div>
-    </div>
-
-    {/* Category pills */}
-    <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:14}}>
-      {cats.map(([cat,info])=><span key={cat} className="chip" style={{background:info.soft,color:info.color,fontSize:9.5,fontWeight:500}}>
-        <div style={{width:6,height:6,borderRadius:"50%",background:info.color}}/>
-        {cat.length>25?cat.slice(0,22)+"…":cat} ({info.count})
-      </span>)}
-    </div>
-
-    {/* Goal list */}
-    <div style={{display:"flex",flexDirection:"column",gap:0}}>
-      {combined.slice(0,6).map((g,i)=>{
-        const appCount=getAppCount(g.id);
-        const installedCount=getInstalledCount(g.id);
-        const catColor=getCatColor(g.category);
-        return<div key={g.id} onClick={()=>{window.location.hash="#score";}} style={{display:"flex",alignItems:"center",gap:9,padding:"8px 0",borderBottom:i<Math.min(combined.length,6)-1?`1px solid ${T.borderSubtle}`:"none",cursor:"pointer",borderRadius:4,transition:"background 0.15s"}} onMouseEnter={e=>e.currentTarget.style.background=T.surfaceHover} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
-          <div style={{width:8,height:8,borderRadius:"50%",background:catColor,flexShrink:0}}/>
-          <div style={{flex:1,minWidth:0}}>
-            <div style={{fontSize:12.5,letterSpacing:"-0.01em",lineHeight:1.35,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{g.name}</div>
-          </div>
-          <div style={{display:"flex",gap:4,flexShrink:0}}>
-            {appCount>0&&<span className="chip" style={{background:T.greenSoft,color:T.green,fontSize:8.5,padding:"2px 6px"}}>{appCount} app{appCount!==1?"s":""}</span>}
-            {installedCount>0&&<span className="chip" style={{background:T.highlightSoft,color:T.highlight,fontSize:8.5,padding:"2px 6px"}}>{installedCount}/{appCount}</span>}
-          </div>
-        </div>;
-      })}
-      {total>6&&<div onClick={()=>{window.location.hash="#goals";}} style={{fontSize:11,color:T.accent,paddingTop:8,textAlign:"center",fontFamily:T.mono,cursor:"pointer"}}>+{total-6} more</div>}
-    </div>
-  </div>;
-
-  /* Inline mode */
-  return<div>
-    <div className="lbl" style={{marginBottom:10,cursor:"pointer"}} onClick={()=>{window.location.hash="#goals";}}>{IC.target(T.textTertiary)} Your Goals · {total}</div>
-    <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:10}}>
-      {cats.map(([cat,info])=><span key={cat} className="chip" style={{background:info.soft,color:info.color,fontSize:9.5}}>
-        {cat} ({info.count})
-      </span>)}
-    </div>
-    <div style={{display:"flex",flexDirection:"column",gap:0}}>
-      {combined.slice(0,5).map((g,i)=>{
-        const catColor=getCatColor(g.category);
-        const appCount=getAppCount(g.id);
-        const installedCount=getInstalledCount(g.id);
-        return<div key={g.id} onClick={()=>{window.location.hash="#score";}} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderBottom:i<Math.min(combined.length,5)-1?`1px solid ${T.borderSubtle}`:"none",cursor:"pointer",borderRadius:4,transition:"background 0.15s"}} onMouseEnter={e=>e.currentTarget.style.background=T.surfaceHover} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
-          <div style={{width:7,height:7,borderRadius:"50%",background:catColor,flexShrink:0}}/>
-          <span style={{flex:1,fontSize:12,letterSpacing:"-0.01em",color:T.textSecondary}}>{g.name}</span>
-          <div style={{display:"flex",gap:4,flexShrink:0}}>
-            {appCount>0&&<span className="chip" style={{background:T.greenSoft,color:T.green,fontSize:8.5,padding:"2px 6px"}}>{appCount} app{appCount!==1?"s":""}</span>}
-            {installedCount>0&&<span className="chip" style={{background:T.highlightSoft,color:T.highlight,fontSize:8.5,padding:"2px 6px"}}>{installedCount}/{appCount}</span>}
-          </div>
-        </div>;
-      })}
-      {total>5&&<div onClick={()=>{window.location.hash="#goals";}} style={{fontSize:10.5,color:T.accent,paddingTop:6,fontFamily:T.mono,cursor:"pointer"}}>+{total-5} more</div>}
-    </div>
-  </div>;
-}
-
-/* ═══ WIDGET: GOAL SCORE ═══ */
-function GoalScoreWidget({mode,industry,selectedGoals}){
-  const agg=computeAggregateScore(selectedGoals||[]);
-  const allGoals=getGoalsByIndustry(industry);
-
-  /* Top 3 goals needing attention (lowest scores) */
-  const needsAttention=(selectedGoals||[])
-    .map(id=>{const g=allGoals.find(x=>x.id===id);const s=GOAL_SCORES[id];return g&&s?{...g,...s}:null;})
-    .filter(Boolean)
-    .sort((a,b)=>a.score-b.score)
-    .slice(0,3);
-
-  if(!selectedGoals||selectedGoals.length===0){
-    if(mode==="pinned") return<div>
-      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
-        <div style={{width:32,height:32,borderRadius:9,background:T.amberSoft,display:"flex",alignItems:"center",justifyContent:"center"}}>{IC.target(T.amber)}</div>
-        <div><div style={{fontSize:13,fontWeight:600,letterSpacing:"-0.01em"}}>Goal Score</div><div style={{fontSize:11,color:T.textTertiary,marginTop:1}}>No goals set</div></div>
-      </div>
-      <div style={{fontSize:12,color:T.textTertiary,textAlign:"center",padding:"16px 0"}}>Complete onboarding to set goals</div>
-    </div>;
-    return<div style={{fontSize:12,color:T.textTertiary,textAlign:"center",padding:16}}>No goals configured yet.</div>;
-  }
-
-  if(mode==="pinned") return<div>
-    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
-      <div style={{display:"flex",alignItems:"center",gap:8}}>
-        <div style={{width:32,height:32,borderRadius:9,background:T.amberSoft,display:"flex",alignItems:"center",justifyContent:"center"}}>{IC.target(T.amber)}</div>
-        <div onClick={()=>{window.location.hash="#score";}} style={{cursor:"pointer"}}><div style={{fontSize:13,fontWeight:600,letterSpacing:"-0.01em"}}>Goal Score</div><div style={{fontSize:11,color:T.textTertiary,marginTop:1}}>{agg.count} goal{agg.count!==1?"s":""} tracked</div></div>
-      </div>
-      <div style={{display:"flex",alignItems:"baseline",gap:6}}>
-        <span style={{fontFamily:T.serif,fontSize:22,fontWeight:500,letterSpacing:"-0.03em"}}>{agg.score}</span>
-        {agg.trend!==0&&<span className="chip" style={{background:agg.trend>0?T.greenSoft:T.roseSoft,color:agg.trend>0?T.green:T.rose}}>{agg.trend>0?"↑":"↓"} {Math.abs(agg.trend)}</span>}
-      </div>
-    </div>
-    <div style={{marginBottom:12}}><StarRating score={agg.score} size={20} gap={2}/></div>
-    {needsAttention.length>0&&<div>
-      <div style={{fontSize:10,fontFamily:T.mono,color:T.textTertiary,textTransform:"uppercase",letterSpacing:"0.04em",marginBottom:8}}>Needs Attention</div>
-      {needsAttention.map((g,i)=><div key={g.id} onClick={()=>{window.location.hash="#score";}} style={{display:"flex",alignItems:"center",gap:8,padding:"7px 0",borderBottom:i<needsAttention.length-1?`1px solid ${T.borderSubtle}`:"none",cursor:"pointer",borderRadius:4,transition:"background 0.15s"}} onMouseEnter={e=>e.currentTarget.style.background=T.surfaceHover} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
-        <StarRating score={g.score} size={10} gap={1}/>
-        <span style={{flex:1,fontSize:12,letterSpacing:"-0.01em",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{g.name}</span>
-        <span style={{fontSize:11,fontFamily:T.mono,fontWeight:600,color:g.score<3?T.rose:T.amber}}>{g.score}</span>
-      </div>)}
-    </div>}
-  </div>;
-
-  /* Inline mode */
-  return<div>
-    <div className="lbl" style={{marginBottom:8,cursor:"pointer"}} onClick={()=>{window.location.hash="#score";}}>{IC.target(T.textTertiary)} Goal Score</div>
-    <div style={{display:"flex",alignItems:"baseline",gap:8,marginBottom:10}}>
-      <span style={{fontFamily:T.serif,fontSize:28,fontWeight:500,letterSpacing:"-0.03em"}}>{agg.score}</span>
-      <span style={{fontSize:13,color:T.textTertiary}}>/5.0</span>
-      {agg.trend!==0&&<span className="chip" style={{background:agg.trend>0?T.greenSoft:T.roseSoft,color:agg.trend>0?T.green:T.rose}}>{agg.trend>0?"↑":"↓"} {Math.abs(agg.trend)}</span>}
-    </div>
-    <StarRating score={agg.score} size={18} gap={2}/>
-    {needsAttention.length>0&&<div style={{marginTop:10}}>
-      {needsAttention.map((g,i)=><div key={g.id} onClick={()=>{window.location.hash="#score";}} style={{display:"flex",alignItems:"center",gap:6,padding:"5px 0",borderBottom:i<needsAttention.length-1?`1px solid ${T.borderSubtle}`:"none",cursor:"pointer",borderRadius:4,transition:"background 0.15s"}} onMouseEnter={e=>e.currentTarget.style.background=T.surfaceHover} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
-        <span style={{fontSize:11,color:T.textSecondary,flex:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{g.name}</span>
-        <span style={{fontSize:10,fontFamily:T.mono,color:g.score<3?T.rose:T.amber}}>{g.score}</span>
-      </div>)}
-    </div>}
-  </div>;
-}
-
 /* ═══ WIDGET DISPATCHER ═══ */
-const WIDGET_MAP={taskList:TaskListWidget,velocity:VelocityWidget,completion:CompletionWidget,revenue:RevenueWidget,activity:ActivityWidget,quickStats:QuickStatsWidget,goals:GoalsSummaryWidget,goalScore:GoalScoreWidget};
-const WIDGET_LABELS={taskList:"Tasks",velocity:"Velocity",completion:"Completion",revenue:"Revenue",activity:"Activity",quickStats:"Stats",goals:"Goals",goalScore:"Goal Score"};
+const WIDGET_MAP={taskList:TaskListWidget,velocity:VelocityWidget,completion:CompletionWidget,revenue:RevenueWidget,activity:ActivityWidget,quickStats:QuickStatsWidget};
+const WIDGET_LABELS={taskList:"Tasks",velocity:"Velocity",completion:"Completion",revenue:"Revenue",activity:"Activity",quickStats:"Stats"};
 
-function ChatWidget({widget,mode,isPinned,onPin,onUnpin,industry,selectedGoals,customGoals,installedApps}){
+function ChatWidget({widget,mode,isPinned,onPin,onUnpin,industry}){
   const Comp=WIDGET_MAP[widget.type];
   if(!Comp) return null;
   const pinned=isPinned;
@@ -7576,7 +7280,7 @@ function ChatWidget({widget,mode,isPinned,onPin,onUnpin,industry,selectedGoals,c
     <div onClick={()=>pinned?onUnpin(widget.type):onPin(widget.type)} style={{position:"absolute",top:mode==="pinned"?10:8,right:mode==="pinned"?10:8,width:26,height:26,borderRadius:7,background:pinned?T.highlightSoft:T.surfaceMuted,border:`1px solid ${pinned?T.highlightBorder:T.border}`,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",transition:"all 0.15s",zIndex:2,opacity:mode==="pinned"?1:0.6}} onMouseEnter={e=>{e.currentTarget.style.opacity="1";e.currentTarget.style.transform="scale(1.08)";}} onMouseLeave={e=>{e.currentTarget.style.opacity=mode==="pinned"?"1":"0.6";e.currentTarget.style.transform="scale(1)";}} title={pinned?"Unpin from dashboard":"Pin to dashboard"}>
       {IC.pin(pinned?T.highlight:T.textTertiary,10)}
     </div>
-    <Comp mode={mode} industry={industry} selectedGoals={selectedGoals} customGoals={customGoals} installedApps={installedApps}/>
+    <Comp mode={mode} industry={industry}/>
   </div>;
 }
 
@@ -7695,7 +7399,7 @@ function SetupWidget({industry,selectedGoals,addedWorkflows,setAddedWorkflows,fo
 }
 
 /* ═══ CHAT MESSAGE (with avatar for AI) ═══ */
-function ChatMessage({msg,pinnedWidgets,onPin,onUnpin,industry,fromChatOnboarding,selectedGoals,customGoals,installedApps,addedWorkflows,setAddedWorkflows,focusGoalName,onNavigate}){
+function ChatMessage({msg,pinnedWidgets,onPin,onUnpin,industry,fromChatOnboarding,selectedGoals,addedWorkflows,setAddedWorkflows,focusGoalName,onNavigate}){
   const isAI=msg.role==="ai";
   const parseBold=(text)=>{
     const parts=text.split(/(\*\*[^*]+\*\*)/g);
@@ -7718,7 +7422,7 @@ function ChatMessage({msg,pinnedWidgets,onPin,onUnpin,industry,fromChatOnboardin
       </div>
       {msg.setupWidget&&<SetupWidget industry={industry} selectedGoals={selectedGoals} addedWorkflows={addedWorkflows} setAddedWorkflows={setAddedWorkflows} focusGoalName={focusGoalName} onNavigate={onNavigate}/>}
       {msg.widgets&&msg.widgets.length>0&&<div style={{display:"flex",flexDirection:"column",gap:8}}>
-        {msg.widgets.map((w,i)=><ChatWidget key={i} widget={w} mode="inline" isPinned={pinnedWidgets.includes(w.type)} onPin={onPin} onUnpin={onUnpin} industry={industry} selectedGoals={selectedGoals} customGoals={customGoals} installedApps={installedApps}/>)}
+        {msg.widgets.map((w,i)=><ChatWidget key={i} widget={w} mode="inline" isPinned={pinnedWidgets.includes(w.type)} onPin={onPin} onUnpin={onUnpin} industry={industry}/>)}
       </div>}
       {msg.chips&&msg.chips.length>0&&<div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
         {msg.chips.map((c,i)=><div key={i} className={i===0?"action-chip primary":"action-chip"}>{c}</div>)}
@@ -7728,7 +7432,7 @@ function ChatMessage({msg,pinnedWidgets,onPin,onUnpin,industry,fromChatOnboardin
 }
 
 /* ═══ CHAT VIEW (Full Screen) ═══ */
-function ChatView({chatMessages,setChatMessages,pinnedWidgets,pinWidget,unpinWidget,industry,fromChatOnboarding,focusGoalName,selectedGoals,customGoals,installedApps,addedWorkflows,setAddedWorkflows,onNavigate}){
+function ChatView({chatMessages,setChatMessages,pinnedWidgets,pinWidget,unpinWidget,industry,fromChatOnboarding,focusGoalName,selectedGoals,addedWorkflows,setAddedWorkflows,onNavigate}){
   const[input,setInput]=useState("");
   const[showTyping,setShowTyping]=useState(false);
   const msgsEnd=useRef(null);
@@ -7806,7 +7510,7 @@ function ChatView({chatMessages,setChatMessages,pinnedWidgets,pinWidget,unpinWid
     {/* Messages */}
     <div style={{flex:1,overflowY:"auto",padding:"18px 32px",display:"flex",flexDirection:"column",alignItems:"center"}}>
       <div style={{...mw,display:"flex",flexDirection:"column",gap:12}}>
-        {chatMessages.map(msg=><ChatMessage key={msg.id} msg={msg} pinnedWidgets={pinnedWidgets} onPin={pinWidget} onUnpin={unpinWidget} industry={industry} fromChatOnboarding={fromChatOnboarding} selectedGoals={selectedGoals} customGoals={customGoals} installedApps={installedApps} addedWorkflows={addedWorkflows} setAddedWorkflows={setAddedWorkflows} focusGoalName={focusGoalName} onNavigate={onNavigate}/>)}
+        {chatMessages.map(msg=><ChatMessage key={msg.id} msg={msg} pinnedWidgets={pinnedWidgets} onPin={pinWidget} onUnpin={unpinWidget} industry={industry} fromChatOnboarding={fromChatOnboarding} selectedGoals={selectedGoals} addedWorkflows={addedWorkflows} setAddedWorkflows={setAddedWorkflows} focusGoalName={focusGoalName} onNavigate={onNavigate}/>)}
 
         {/* Typing indicator */}
         {showTyping&&<div style={{display:"flex",gap:12,alignItems:"flex-start",animation:"fadeIn 0.3s ease"}}>
@@ -7864,7 +7568,7 @@ function WidgetPicker({open,onClose,pinnedWidgets,onAdd}){
 }
 
 /* ═══ DASHBOARD VIEW (Full Screen) ═══ */
-function DashboardView({pinnedWidgets,pinWidget,unpinWidget,industry,selectedGoals,customGoals,installedApps}){
+function DashboardView({pinnedWidgets,pinWidget,unpinWidget,industry}){
   const[pickerOpen,setPickerOpen]=useState(false);
   const now=new Date();
   const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -7901,7 +7605,7 @@ function DashboardView({pinnedWidgets,pinWidget,unpinWidget,industry,selectedGoa
     {/* Widget grid */}
     {hasPinned?<div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:14}}>
       {pinnedWidgets.map((type,idx)=><div key={type} style={{animation:`fadeIn 0.4s ease ${idx*0.08}s both`}}>
-        <ChatWidget widget={{type}} mode="pinned" isPinned={true} onPin={pinWidget} onUnpin={unpinWidget} industry={industry} selectedGoals={selectedGoals} customGoals={customGoals} installedApps={installedApps}/>
+        <ChatWidget widget={{type}} mode="pinned" isPinned={true} onPin={pinWidget} onUnpin={unpinWidget} industry={industry}/>
       </div>)}
     </div>:
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:320,animation:"fadeIn 0.5s ease"}}>
@@ -7936,12 +7640,12 @@ function HomeTabBar({homeTab,setHomeTab}){
 }
 
 /* ═══ HOME CONTENT (Router) ═══ */
-function HomeContent({homeTab,setHomeTab,chatMessages,setChatMessages,pinnedWidgets,pinWidget,unpinWidget,overallPct,setConnectOpen,industry,fromChatOnboarding,focusGoalName,selectedGoals,customGoals,installedApps,addedWorkflows,setAddedWorkflows,onNavigate}){
+function HomeContent({homeTab,setHomeTab,chatMessages,setChatMessages,pinnedWidgets,pinWidget,unpinWidget,overallPct,setConnectOpen,industry,fromChatOnboarding,focusGoalName,selectedGoals,addedWorkflows,setAddedWorkflows,onNavigate}){
   return<div style={{display:"flex",flexDirection:"column",height:"calc(100vh - 56px)",overflow:"hidden"}}>
     <HomeTabBar homeTab={homeTab} setHomeTab={setHomeTab}/>
     {homeTab==="dashboard"
-      ?<DashboardView pinnedWidgets={pinnedWidgets} pinWidget={pinWidget} unpinWidget={unpinWidget} industry={industry} selectedGoals={selectedGoals} customGoals={customGoals} installedApps={installedApps}/>
-      :<ChatView chatMessages={chatMessages} setChatMessages={setChatMessages} pinnedWidgets={pinnedWidgets} pinWidget={pinWidget} unpinWidget={unpinWidget} industry={industry} fromChatOnboarding={fromChatOnboarding} focusGoalName={focusGoalName} selectedGoals={selectedGoals} customGoals={customGoals} installedApps={installedApps} addedWorkflows={addedWorkflows} setAddedWorkflows={setAddedWorkflows} onNavigate={onNavigate}/>
+      ?<DashboardView pinnedWidgets={pinnedWidgets} pinWidget={pinWidget} unpinWidget={unpinWidget} industry={industry}/>
+      :<ChatView chatMessages={chatMessages} setChatMessages={setChatMessages} pinnedWidgets={pinnedWidgets} pinWidget={pinWidget} unpinWidget={unpinWidget} industry={industry} fromChatOnboarding={fromChatOnboarding} focusGoalName={focusGoalName} selectedGoals={selectedGoals} addedWorkflows={addedWorkflows} setAddedWorkflows={setAddedWorkflows} onNavigate={onNavigate}/>
     }
   </div>;
 }
@@ -8002,877 +7706,6 @@ function BrandIcon({brandLogoUrl,size=28}){
   return<RCLogo size={size}/>;
 }
 
-/* ═══ REGISTERS (DATA TABLES) ═══ */
-
-/* ── Column + row schemas per register ── */
-const REGISTER_SCHEMAS={
-  "risk-register":{
-    columns:[
-      {id:"rid",label:"ID",width:80,type:"text"},
-      {id:"description",label:"Risk Description",width:280,type:"text"},
-      {id:"category",label:"Category",width:150,type:"select",options:["Health & Safety","Environmental","Operational","Quality"]},
-      {id:"site",label:"Site",width:160,type:"select"},
-      {id:"level",label:"Risk Level",width:110,type:"badge"},
-      {id:"controls",label:"Controls",width:240,type:"text"},
-      {id:"owner",label:"Owner",width:140,type:"person"},
-      {id:"lastReview",label:"Last Review",width:110,type:"date"},
-    ],
-    rows:[
-      {rid:"R-001",description:"Slips and falls on wet surfaces",category:"Health & Safety",site:"Brisbane Warehouse",level:"High",controls:"Wet floor signs, Anti-slip mats",owner:{name:"John Doe",initials:"JD"},lastReview:"2024-01-10"},
-      {rid:"R-002",description:"Chemical exposure during mixing operations",category:"Environmental",site:"Sydney Plant",level:"Medium",controls:"PPE requirement, Ventilation system",owner:{name:"Alice Lee",initials:"AL"},lastReview:"2024-01-08"},
-      {rid:"R-003",description:"Forklift\u2013pedestrian interaction in loading zone",category:"Health & Safety",site:"Sydney Plant",level:"High",controls:"Marked walkways, Spotters, Speed limits",owner:{name:"Ravi Singh",initials:"RS"},lastReview:"2024-01-12"},
-      {rid:"R-004",description:"Manual handling injury during pallet stacking",category:"Health & Safety",site:"Brisbane Warehouse",level:"Medium",controls:"Lift aids, Training, Job rotation",owner:{name:"Kira Moore",initials:"KM"},lastReview:"2024-01-06"},
-      {rid:"R-005",description:"Unlabelled chemical container in open area",category:"Environmental",site:"Melbourne Distribution",level:"High",controls:"SDS check, Secondary containment, Labelling",owner:{name:"Ava Tan",initials:"AT"},lastReview:"2024-01-03"},
-      {rid:"R-006",description:"Equipment lockout/tagout not followed",category:"Operational",site:"Sydney Plant",level:"High",controls:"LOTO training, Permit to work, Audits",owner:{name:"Mia Brooks",initials:"MB"},lastReview:"2024-01-14"},
-      {rid:"R-007",description:"Quality deviation from incorrect batch labelling",category:"Quality",site:"Sydney Plant",level:"Medium",controls:"Double-check step, Barcode scan, QA sign-off",owner:{name:"Hannah Boyd",initials:"HB"},lastReview:"2024-01-09"},
-      {rid:"R-008",description:"Slip hazard at entry during wet weather",category:"Health & Safety",site:"Brisbane Warehouse",level:"Medium",controls:"Mats, Signage, Cleaning schedule",owner:{name:"John Doe",initials:"JD"},lastReview:"2024-01-04"},
-      {rid:"R-009",description:"Unauthorised access to restricted chemical store",category:"Operational",site:"Melbourne Distribution",level:"High",controls:"Access control, CCTV, Visitor logging",owner:{name:"Zoe Wu",initials:"ZW"},lastReview:"2024-01-11"},
-      {rid:"R-010",description:"Fire risk from blocked emergency exits",category:"Health & Safety",site:"Brisbane Warehouse",level:"High",controls:"Daily checks, Clear signage, Enforcement",owner:{name:"Chris Park",initials:"CP"},lastReview:"2024-01-15"},
-    ],
-  },
-  "asset-register":{
-    columns:[
-      {id:"aid",label:"ID",width:80,type:"text"},
-      {id:"name",label:"Asset Name",width:220,type:"text"},
-      {id:"assetType",label:"Type",width:130,type:"select",options:["Machinery","Vehicle","Tool","Building"]},
-      {id:"site",label:"Location",width:160,type:"select"},
-      {id:"status",label:"Status",width:110,type:"badge"},
-      {id:"nextService",label:"Next Service",width:110,type:"date"},
-      {id:"assignedTo",label:"Assigned To",width:140,type:"person"},
-    ],
-    rows:[
-      {aid:"A-001",name:"CNC Milling Machine #3",assetType:"Machinery",site:"Sydney Plant",status:"Active",nextService:"2024-02-15",assignedTo:{name:"Ravi Singh",initials:"RS"}},
-      {aid:"A-002",name:"Forklift FL-12",assetType:"Vehicle",site:"Brisbane Warehouse",status:"Active",nextService:"2024-01-20",assignedTo:{name:"Kira Moore",initials:"KM"}},
-      {aid:"A-003",name:"Hydraulic Press HP-7",assetType:"Machinery",site:"Sydney Plant",status:"Maintenance",nextService:"2024-01-18",assignedTo:{name:"Mia Brooks",initials:"MB"}},
-      {aid:"A-004",name:"Welding Station WS-2",assetType:"Machinery",site:"Melbourne Distribution",status:"Active",nextService:"2024-03-01",assignedTo:{name:"John Doe",initials:"JD"}},
-      {aid:"A-005",name:"Pallet Jack PJ-08",assetType:"Tool",site:"Brisbane Warehouse",status:"Active",nextService:"2024-02-28",assignedTo:{name:"Alice Lee",initials:"AL"}},
-      {aid:"A-006",name:"Delivery Van DV-03",assetType:"Vehicle",site:"Melbourne Distribution",status:"Active",nextService:"2024-02-10",assignedTo:{name:"Ava Tan",initials:"AT"}},
-      {aid:"A-007",name:"Air Compressor AC-5",assetType:"Machinery",site:"Sydney Plant",status:"Retired",nextService:"\u2014",assignedTo:{name:"\u2014",initials:"\u2014"}},
-      {aid:"A-008",name:"Overhead Crane OC-1",assetType:"Machinery",site:"Brisbane Warehouse",status:"Active",nextService:"2024-04-15",assignedTo:{name:"Chris Park",initials:"CP"}},
-    ],
-  },
-  "quality-ncr":{
-    columns:[
-      {id:"nid",label:"ID",width:80,type:"text"},
-      {id:"description",label:"NCR Description",width:260,type:"text"},
-      {id:"source",label:"Source",width:140,type:"select",options:["Inspection","Audit","Customer Complaint","Internal"]},
-      {id:"severity",label:"Severity",width:100,type:"badge"},
-      {id:"ncrStatus",label:"Status",width:110,type:"badge"},
-      {id:"dueDate",label:"Due Date",width:110,type:"date"},
-      {id:"owner",label:"Owner",width:140,type:"person"},
-    ],
-    rows:[
-      {nid:"NCR-041",description:"Out-of-spec weld on bracket assembly",source:"Inspection",severity:"Major",ncrStatus:"Open",dueDate:"2024-01-22",owner:{name:"Ravi Singh",initials:"RS"}},
-      {nid:"NCR-042",description:"Incorrect torque on fasteners \u2014 Line 2",source:"Audit",severity:"Critical",ncrStatus:"In Progress",dueDate:"2024-01-18",owner:{name:"Mia Brooks",initials:"MB"}},
-      {nid:"NCR-043",description:"Paint adhesion failure on batch 1840",source:"Customer Complaint",severity:"Major",ncrStatus:"Open",dueDate:"2024-01-25",owner:{name:"Hannah Boyd",initials:"HB"}},
-      {nid:"NCR-044",description:"Documentation missing for heat treatment",source:"Internal",severity:"Minor",ncrStatus:"Closed",dueDate:"2024-01-10",owner:{name:"Alice Lee",initials:"AL"}},
-      {nid:"NCR-045",description:"Dimensional non-conformance on shaft batch",source:"Inspection",severity:"Major",ncrStatus:"In Progress",dueDate:"2024-01-20",owner:{name:"John Doe",initials:"JD"}},
-    ],
-  },
-  "food-safety":{
-    columns:[
-      {id:"fid",label:"ID",width:80,type:"text"},
-      {id:"hazard",label:"Hazard Description",width:260,type:"text"},
-      {id:"category",label:"Category",width:140,type:"select",options:["Biological","Chemical","Physical","Allergen"]},
-      {id:"level",label:"Risk Level",width:110,type:"badge"},
-      {id:"controls",label:"Controls",width:240,type:"text"},
-      {id:"owner",label:"Owner",width:140,type:"person"},
-      {id:"lastReview",label:"Last Review",width:110,type:"date"},
-    ],
-    rows:[
-      {fid:"FS-001",hazard:"Cross-contamination at prep station",category:"Biological",level:"High",controls:"Colour-coded boards, Handwashing SOP",owner:{name:"Maria Chen",initials:"MC"},lastReview:"2024-01-12"},
-      {fid:"FS-002",hazard:"Allergen mix-up in shared fryer oil",category:"Allergen",level:"High",controls:"Dedicated fryer, Allergen chart",owner:{name:"Tom Walker",initials:"TW"},lastReview:"2024-01-10"},
-      {fid:"FS-003",hazard:"Cold chain break during delivery",category:"Biological",level:"Medium",controls:"Temp loggers, Driver training",owner:{name:"Priya Patel",initials:"PP"},lastReview:"2024-01-08"},
-      {fid:"FS-004",hazard:"Cleaning chemical residue on food surfaces",category:"Chemical",level:"Medium",controls:"Food-safe chemicals, Rinse SOP",owner:{name:"Jake Nguyen",initials:"JN"},lastReview:"2024-01-06"},
-      {fid:"FS-005",hazard:"Foreign object in flour supply",category:"Physical",level:"Low",controls:"Sieve check, Supplier audit",owner:{name:"Maria Chen",initials:"MC"},lastReview:"2024-01-14"},
-    ],
-  },
-  "compliance-log":{
-    columns:[
-      {id:"cid",label:"ID",width:80,type:"text"},
-      {id:"requirement",label:"Requirement",width:260,type:"text"},
-      {id:"regBody",label:"Regulatory Body",width:150,type:"text"},
-      {id:"status",label:"Status",width:110,type:"badge"},
-      {id:"dueDate",label:"Due Date",width:110,type:"date"},
-      {id:"owner",label:"Owner",width:140,type:"person"},
-    ],
-    rows:[
-      {cid:"CL-001",requirement:"Annual fire safety certificate renewal",regBody:"Local Council",status:"Overdue",dueDate:"2024-01-05",owner:{name:"Tom Walker",initials:"TW"}},
-      {cid:"CL-002",requirement:"Food handler certification \u2014 all staff",regBody:"Health Dept",status:"Current",dueDate:"2024-06-30",owner:{name:"Maria Chen",initials:"MC"}},
-      {cid:"CL-003",requirement:"Grease trap service",regBody:"EPA",status:"Due Soon",dueDate:"2024-01-28",owner:{name:"Jake Nguyen",initials:"JN"}},
-      {cid:"CL-004",requirement:"Pest control quarterly inspection",regBody:"Health Dept",status:"Current",dueDate:"2024-03-15",owner:{name:"Priya Patel",initials:"PP"}},
-    ],
-  },
-  "incident-log":{
-    columns:[
-      {id:"iid",label:"ID",width:80,type:"text"},
-      {id:"description",label:"Incident Description",width:260,type:"text"},
-      {id:"incType",label:"Type",width:130,type:"select",options:["Injury","Near Miss","Customer Complaint","Property Damage"]},
-      {id:"severity",label:"Severity",width:100,type:"badge"},
-      {id:"status",label:"Status",width:110,type:"badge"},
-      {id:"date",label:"Date",width:110,type:"date"},
-      {id:"owner",label:"Assigned To",width:140,type:"person"},
-    ],
-    rows:[
-      {iid:"INC-018",description:"Burn from hot oil splash at fryer",incType:"Injury",severity:"Medium",status:"Closed",date:"2024-01-10",owner:{name:"Tom Walker",initials:"TW"}},
-      {iid:"INC-019",description:"Customer allergic reaction reported",incType:"Customer Complaint",severity:"High",status:"Open",date:"2024-01-13",owner:{name:"Maria Chen",initials:"MC"}},
-      {iid:"INC-020",description:"Wet floor near drink station \u2014 no sign",incType:"Near Miss",severity:"Low",status:"Closed",date:"2024-01-08",owner:{name:"Jake Nguyen",initials:"JN"}},
-    ],
-  },
-  "fleet-register":{
-    columns:[
-      {id:"vid",label:"Rego",width:90,type:"text"},
-      {id:"vehicle",label:"Vehicle",width:200,type:"text"},
-      {id:"vType",label:"Type",width:120,type:"select",options:["Rigid Truck","Semi-Trailer","Van","Ute"]},
-      {id:"status",label:"Status",width:110,type:"badge"},
-      {id:"nextService",label:"Next Service",width:110,type:"date"},
-      {id:"odometer",label:"Odometer",width:100,type:"text"},
-      {id:"driver",label:"Primary Driver",width:140,type:"person"},
-    ],
-    rows:[
-      {vid:"ABC-123",vehicle:"Isuzu FRR 600 Long",vType:"Rigid Truck",status:"Active",nextService:"2024-02-01",odometer:"142,300 km",driver:{name:"Steve Martin",initials:"SM"}},
-      {vid:"XYZ-789",vehicle:"Volvo FH16 Prime Mover",vType:"Semi-Trailer",status:"Active",nextService:"2024-01-25",odometer:"389,100 km",driver:{name:"Dave Collins",initials:"DC"}},
-      {vid:"QLD-456",vehicle:"Toyota HiAce LWB",vType:"Van",status:"Maintenance",nextService:"2024-01-18",odometer:"87,200 km",driver:{name:"\u2014",initials:"\u2014"}},
-      {vid:"NSW-321",vehicle:"Kenworth T610",vType:"Semi-Trailer",status:"Active",nextService:"2024-03-10",odometer:"512,400 km",driver:{name:"Raj Sharma",initials:"RS"}},
-      {vid:"VIC-654",vehicle:"Mitsubishi Canter",vType:"Rigid Truck",status:"Active",nextService:"2024-02-14",odometer:"63,800 km",driver:{name:"Kim Tran",initials:"KT"}},
-      {vid:"SA-987",vehicle:"Ford Ranger XLT",vType:"Ute",status:"Active",nextService:"2024-04-20",odometer:"28,400 km",driver:{name:"Ben O'Neil",initials:"BO"}},
-    ],
-  },
-  "risk-register-tl":{
-    columns:[
-      {id:"rid",label:"ID",width:80,type:"text"},
-      {id:"description",label:"Risk Description",width:280,type:"text"},
-      {id:"category",label:"Category",width:150,type:"select",options:["Driver Safety","Vehicle","Route","Compliance"]},
-      {id:"level",label:"Risk Level",width:110,type:"badge"},
-      {id:"controls",label:"Controls",width:240,type:"text"},
-      {id:"owner",label:"Owner",width:140,type:"person"},
-      {id:"lastReview",label:"Last Review",width:110,type:"date"},
-    ],
-    rows:[
-      {rid:"TR-001",description:"Driver fatigue on long-haul routes",category:"Driver Safety",level:"High",controls:"EWD monitoring, Rest stop policy",owner:{name:"Steve Martin",initials:"SM"},lastReview:"2024-01-12"},
-      {rid:"TR-002",description:"Tyre blowout on loaded semi",category:"Vehicle",level:"High",controls:"Pre-trip checks, Tyre pressure monitoring",owner:{name:"Dave Collins",initials:"DC"},lastReview:"2024-01-10"},
-      {rid:"TR-003",description:"Unsecured load during transit",category:"Compliance",level:"Medium",controls:"Load restraint training, Checklists",owner:{name:"Raj Sharma",initials:"RS"},lastReview:"2024-01-08"},
-      {rid:"TR-004",description:"Pedestrian interaction at loading dock",category:"Driver Safety",level:"Medium",controls:"Reversing cameras, Spotters",owner:{name:"Kim Tran",initials:"KT"},lastReview:"2024-01-14"},
-      {rid:"TR-005",description:"Chain of responsibility documentation gap",category:"Compliance",level:"High",controls:"Digital logbook, CoR training",owner:{name:"Ben O'Neil",initials:"BO"},lastReview:"2024-01-06"},
-    ],
-  },
-  "incident-log-tl":{
-    columns:[
-      {id:"iid",label:"ID",width:80,type:"text"},
-      {id:"description",label:"Incident Description",width:260,type:"text"},
-      {id:"incType",label:"Type",width:130,type:"select",options:["Accident","Near Miss","Damage","Compliance Breach"]},
-      {id:"severity",label:"Severity",width:100,type:"badge"},
-      {id:"status",label:"Status",width:110,type:"badge"},
-      {id:"date",label:"Date",width:110,type:"date"},
-      {id:"driver",label:"Driver",width:140,type:"person"},
-    ],
-    rows:[
-      {iid:"TI-031",description:"Reversing contact with bollard at depot",incType:"Damage",severity:"Low",status:"Closed",date:"2024-01-09",driver:{name:"Dave Collins",initials:"DC"}},
-      {iid:"TI-032",description:"Near miss \u2014 cyclist at intersection",incType:"Near Miss",severity:"Medium",status:"Open",date:"2024-01-13",driver:{name:"Steve Martin",initials:"SM"}},
-      {iid:"TI-033",description:"EWD breach \u2014 exceeded driving hours",incType:"Compliance Breach",severity:"High",status:"In Progress",date:"2024-01-11",driver:{name:"Raj Sharma",initials:"RS"}},
-      {iid:"TI-034",description:"Minor scrape on trailer during docking",incType:"Damage",severity:"Low",status:"Closed",date:"2024-01-07",driver:{name:"Kim Tran",initials:"KT"}},
-    ],
-  },
-};
-
-/* ── Badge colour helper ── */
-function regBadgeStyle(value){
-  const v=(value||"").toLowerCase();
-  if(["high","critical","overdue"].includes(v)) return{background:T.rose,color:"#fff"};
-  if(["medium","major","due soon","in progress"].includes(v)) return{background:T.amberSoft,color:"#92400E",border:`1px solid ${T.amberBorder}`};
-  if(["low","minor","active","current"].includes(v)) return{background:T.greenSoft,color:"#065F46",border:`1px solid ${T.greenBorder}`};
-  if(["closed"].includes(v)) return{background:T.surfaceMuted,color:T.textSecondary,border:`1px solid ${T.border}`};
-  if(["open"].includes(v)) return{background:T.highlightSoft,color:"#1D4ED8",border:`1px solid ${T.highlightBorder}`};
-  if(["maintenance","retired"].includes(v)) return{background:T.surfaceMuted,color:T.textSecondary,border:`1px solid ${T.border}`};
-  return{background:T.surfaceMuted,color:T.textSecondary,border:`1px solid ${T.border}`};
-}
-
-/* ── Format date string ── */
-function regFormatDate(d){
-  if(!d||d==="\u2014") return d||"";
-  const dt=new Date(d);
-  return dt.toLocaleDateString("en-AU",{day:"numeric",month:"short",year:"numeric"});
-}
-
-/* ── Cell renderer ── */
-function RegCell({col,value}){
-  if(col.type==="badge"){
-    const s=regBadgeStyle(value);
-    return<span style={{padding:"3px 10px",borderRadius:99,fontSize:11,fontWeight:600,fontFamily:T.mono,whiteSpace:"nowrap",...s}}>{value}</span>;
-  }
-  if(col.type==="person"){
-    if(!value||typeof value==="string") return<span style={{fontSize:13,color:T.textSecondary}}>{value||"\u2014"}</span>;
-    return<div style={{display:"flex",alignItems:"center",gap:8}}>
-      <div style={{width:24,height:24,borderRadius:"50%",background:T.accent,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:600,flexShrink:0}}>{value.initials}</div>
-      <span style={{fontSize:13}}>{value.name}</span>
-    </div>;
-  }
-  if(col.type==="date") return<span style={{fontSize:13,color:T.textSecondary,fontFamily:T.mono,fontSize:12}}>{regFormatDate(value)}</span>;
-  if(col.type==="select") return<span style={{fontSize:13}}>{value}</span>;
-  return<span style={{fontSize:13}}>{value}</span>;
-}
-
-/* ── Registers Page ── */
-function RegistersPage({industry}){
-  const[activeRegister,setActiveRegister]=useState(null);
-  const[search,setSearch]=useState("");
-  const[selectedRows,setSelectedRows]=useState(new Set());
-
-  const catalogs=REGISTER_CATALOG[industry]||REGISTER_CATALOG.manufacturing;
-
-  /* ── List view ── */
-  if(!activeRegister){
-    return<div style={{flex:1,overflowY:"auto"}}>
-      <style>{`
-        .reg-card{background:${T.surface};border:1px solid ${T.border};border-radius:${T.r}px;padding:16px 20px;cursor:pointer;transition:all 0.2s}
-        .reg-card:hover{box-shadow:0 6px 20px rgba(0,0,0,0.05);border-color:${T.accentBorder};transform:translateY(-1px)}
-      `}</style>
-      <div style={{maxWidth:960,margin:"0 auto",padding:"28px 24px 60px"}}>
-        <div style={{marginBottom:24}}>
-          <h1 style={{fontFamily:T.serif,fontSize:"clamp(22px,3vw,28px)",fontWeight:400,letterSpacing:"-0.03em",marginBottom:8}}>Data Tables</h1>
-          <p style={{fontSize:13,color:T.textSecondary,lineHeight:1.6}}>Structured data tables for your workspace. Click a table to view and manage records.</p>
-        </div>
-
-        {/* Entity table */}
-        <div style={{background:T.surface,border:`1px solid ${T.border}`,borderRadius:T.r+4,overflow:"hidden"}}>
-          <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
-            <thead>
-              <tr style={{background:T.surfaceHover}}>
-                <th style={{textAlign:"left",padding:"10px 20px",fontWeight:500,color:T.textSecondary,fontSize:12,fontFamily:T.mono,letterSpacing:"0.03em"}}>Name</th>
-                <th style={{textAlign:"left",padding:"10px 16px",fontWeight:500,color:T.textSecondary,fontSize:12,fontFamily:T.mono}}>Type</th>
-                <th style={{textAlign:"left",padding:"10px 16px",fontWeight:500,color:T.textSecondary,fontSize:12,fontFamily:T.mono}}>Records</th>
-                <th style={{textAlign:"left",padding:"10px 16px",fontWeight:500,color:T.textSecondary,fontSize:12,fontFamily:T.mono}}>Last Updated</th>
-                <th style={{width:100,padding:"10px 16px"}}></th>
-              </tr>
-            </thead>
-            <tbody>
-              {catalogs.map((reg,i)=><tr key={reg.id} onClick={()=>{setActiveRegister(reg.id);setSearch("");setSelectedRows(new Set());}} style={{borderTop:`1px solid ${T.borderSubtle}`,cursor:"pointer",transition:"background 0.15s"}} onMouseEnter={e=>e.currentTarget.style.background=T.surfaceHover} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
-                <td style={{padding:"14px 20px"}}>
-                  <div style={{display:"flex",alignItems:"center",gap:10}}>
-                    <div style={{width:30,height:30,borderRadius:8,background:T.surfaceMuted,border:`1px solid ${T.borderSubtle}`,display:"flex",alignItems:"center",justifyContent:"center"}}>{IC.grid(T.textSecondary)}</div>
-                    <span style={{fontWeight:600,letterSpacing:"-0.01em"}}>{reg.name}</span>
-                  </div>
-                </td>
-                <td style={{padding:"14px 16px",color:T.textSecondary}}>{reg.type}</td>
-                <td style={{padding:"14px 16px",color:T.textSecondary,fontFamily:T.mono,fontSize:12}}>{reg.rowCount}</td>
-                <td style={{padding:"14px 16px",color:T.textTertiary,fontSize:12}}>{reg.updatedAgo}</td>
-                <td style={{padding:"14px 16px",textAlign:"right"}}>
-                  <span style={{padding:"5px 14px",borderRadius:T.rSm,border:`1px solid ${T.border}`,fontSize:12,fontWeight:500,color:T.textSecondary}}>Open</span>
-                </td>
-              </tr>)}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>;
-  }
-
-  /* ── Table view ── */
-  const schema=REGISTER_SCHEMAS[activeRegister];
-  const entry=catalogs.find(c=>c.id===activeRegister);
-  if(!schema) return<div style={{padding:40,textAlign:"center",color:T.textTertiary}}>Register not found.</div>;
-
-  const filteredRows=search
-    ?schema.rows.filter(row=>Object.values(row).some(v=>{
-      const s=typeof v==="object"?JSON.stringify(v):String(v);
-      return s.toLowerCase().includes(search.toLowerCase());
-    }))
-    :schema.rows;
-
-  const allSelected=filteredRows.length>0&&filteredRows.every((_,i)=>selectedRows.has(i));
-  const someSelected=selectedRows.size>0;
-
-  const toggleRow=(i)=>setSelectedRows(prev=>{const n=new Set(prev);if(n.has(i))n.delete(i);else n.add(i);return n;});
-  const toggleAll=()=>{
-    if(allSelected) setSelectedRows(new Set());
-    else setSelectedRows(new Set(filteredRows.map((_,i)=>i)));
-  };
-
-  return<div style={{flex:1,overflowY:"auto"}}>
-    <style>{`
-      .reg-th{position:sticky;top:0;z-index:5;background:${T.surfaceHover};border-right:1px solid ${T.borderSubtle};font-weight:500;font-size:12;color:${T.textSecondary};padding:10px 12px;text-align:left;user-select:none;white-space:nowrap;font-family:${T.mono}}
-      .reg-th:last-child{border-right:none}
-      .reg-td{border-right:1px solid ${T.bg};border-bottom:1px solid ${T.bg};padding:12px;background:${T.surface};transition:background 0.1s}
-      .reg-td:last-child{border-right:none}
-      .reg-tr:hover .reg-td{background:${T.surfaceHover}}
-      .reg-table{border-collapse:separate;border-spacing:0;width:100%}
-    `}</style>
-
-    <div style={{maxWidth:1200,margin:"0 auto",padding:"20px 24px 60px"}}>
-      {/* Header bar */}
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,flexWrap:"wrap",gap:12}}>
-        <div style={{display:"flex",alignItems:"center",gap:12}}>
-          <div onClick={()=>{setActiveRegister(null);setSearch("");setSelectedRows(new Set());}} style={{width:32,height:32,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",border:`1px solid ${T.border}`,background:T.surface}}>{IC.chevLeft(T.textSecondary)}</div>
-          <div>
-            <h2 style={{fontFamily:T.serif,fontSize:18,fontWeight:500,letterSpacing:"-0.02em"}}>{entry?.name||"Register"}</h2>
-            <p style={{fontSize:11,color:T.textTertiary,fontFamily:T.mono}}>{filteredRows.length} record{filteredRows.length!==1?"s":""}{entry?.updatedAgo?` \u2022 Updated ${entry.updatedAgo}`:""}</p>
-          </div>
-        </div>
-        <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <div style={{display:"flex",alignItems:"center",gap:8,height:34,borderRadius:T.rSm,border:`1px solid ${T.border}`,background:T.surface,padding:"0 12px",minWidth:240}}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.textTertiary} strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search..." style={{border:"none",background:"none",outline:"none",fontSize:13,fontFamily:T.sans,color:T.text,flex:1}} />
-          </div>
-          <div style={{padding:"7px 14px",borderRadius:T.rSm,background:T.accent,color:"#fff",fontSize:12,fontWeight:600,cursor:"pointer",whiteSpace:"nowrap"}}>{IC.plus("#fff",12)} Add Row</div>
-        </div>
-      </div>
-
-      {/* Bulk actions bar */}
-      {someSelected&&<div style={{background:T.surface,border:`1px solid ${T.border}`,borderRadius:T.rSm,padding:"10px 16px",marginBottom:12,display:"flex",alignItems:"center",justifyContent:"space-between",animation:"fadeIn 0.2s ease"}}>
-        <div style={{fontSize:13}}><span style={{fontWeight:600}}>{selectedRows.size}</span> <span style={{color:T.textSecondary}}>selected</span></div>
-        <div style={{display:"flex",gap:8}}>
-          <span style={{padding:"5px 12px",borderRadius:T.rSm,border:`1px solid ${T.border}`,fontSize:12,color:T.textSecondary,cursor:"pointer"}}>Export</span>
-          <span style={{padding:"5px 12px",borderRadius:T.rSm,border:`1px solid ${T.border}`,fontSize:12,color:T.rose,cursor:"pointer"}}>Delete</span>
-          <span onClick={()=>setSelectedRows(new Set())} style={{padding:"5px 12px",borderRadius:T.rSm,border:`1px solid ${T.border}`,fontSize:12,color:T.textSecondary,cursor:"pointer"}}>Clear</span>
-        </div>
-      </div>}
-
-      {/* Table */}
-      <div style={{background:T.surface,border:`1px solid ${T.border}`,borderRadius:T.r+4,overflow:"hidden",boxShadow:"0 1px 3px rgba(0,0,0,0.04)"}}>
-        <div style={{overflowX:"auto"}}>
-          <table className="reg-table">
-            <thead>
-              <tr>
-                <th className="reg-th" style={{width:44,padding:"10px 12px"}}>
-                  <input type="checkbox" checked={allSelected} onChange={toggleAll} style={{width:16,height:16,cursor:"pointer",accentColor:T.accent}} />
-                </th>
-                {schema.columns.map(col=><th key={col.id} className="reg-th" style={{width:col.width,minWidth:col.width}}>{col.label}</th>)}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredRows.map((row,ri)=>{
-                const isSel=selectedRows.has(ri);
-                return<tr key={ri} className="reg-tr">
-                  <td className="reg-td" style={{padding:"12px",width:44,background:isSel?T.highlightSoft:undefined}}>
-                    <input type="checkbox" checked={isSel} onChange={()=>toggleRow(ri)} style={{width:16,height:16,cursor:"pointer",accentColor:T.accent}} />
-                  </td>
-                  {schema.columns.map(col=>{
-                    const val=row[col.id];
-                    return<td key={col.id} className="reg-td" style={{background:isSel?T.highlightSoft:undefined}}>
-                      <RegCell col={col} value={val}/>
-                    </td>;
-                  })}
-                </tr>;
-              })}
-            </tbody>
-          </table>
-        </div>
-        {filteredRows.length===0&&<div style={{padding:"32px 20px",textAlign:"center",color:T.textTertiary,fontSize:13}}>No records match your search.</div>}
-      </div>
-    </div>
-  </div>;
-}
-
-/* ═══ TASKS PAGE ═══ */
-
-function TasksPage({industry,installedApps,selectedGoals}){
-  const[activeTab,setActiveTab]=useState("tasks");
-  const[tasks,setTasks]=useState([]);
-  const[activities,setActivities]=useState([]);
-  const[showFab,setShowFab]=useState(false);
-  const[completing,setCompleting]=useState(null);
-  const[showIssueForm,setShowIssueForm]=useState(false);
-  const[activeWorkflow,setActiveWorkflow]=useState(null);
-  const _installed=installedApps||[];
-
-  /* Derive tasks from TASK_SEEDS filtered by installed apps */
-  useEffect(()=>{
-    const seeds=(TASK_SEEDS[industry]||TASK_SEEDS.manufacturing)||[];
-    const filtered=seeds.filter(t=>_installed.includes(t.appId)).map(t=>({...t,status:"pending"}));
-    setTasks(filtered);
-  },[industry,_installed]);
-
-  /* Load activity seeds */
-  useEffect(()=>{
-    const seeds=(ACTIVITY_SEEDS[industry]||ACTIVITY_SEEDS.manufacturing)||[];
-    setActivities(seeds);
-  },[industry]);
-
-  /* Simulated completion results */
-  const COMPLETION_RESULTS=[
-    {score:96,summary:"All checks passed. No issues found.",aiInsight:"Consistent performance — 3rd clean result this week."},
-    {score:88,summary:"Minor finding flagged. Follow-up recommended.",aiInsight:"This area has shown improvement — score up 6% from last month."},
-    {score:100,summary:"Perfect score. All items within spec.",aiInsight:null},
-    {score:92,summary:"Completed with 1 observation noted.",aiInsight:"Similar observation logged last Tuesday — may indicate a pattern."},
-    {score:78,summary:"2 items flagged for corrective action.",aiInsight:"Flagged items correlate with recent equipment change. Review with maintenance."},
-  ];
-
-  const startTask=useCallback((taskId)=>{
-    const task=tasks.find(t=>t.id===taskId);
-    if(!task)return;
-    const template=WORKFLOW_STEP_TEMPLATES[task.workflowId]||WORKFLOW_STEP_TEMPLATES["_default"];
-    const steps=template.steps.map(s=>({...s}));
-    setTasks(prev=>prev.map(t=>t.id===taskId?{...t,status:"in_progress"}:t));
-    setActiveWorkflow({task,templateName:template.name,steps,stepIndex:0,answers:{}});
-  },[tasks]);
-
-  const completeWorkflow=useCallback(()=>{
-    if(!activeWorkflow)return;
-    const task=activeWorkflow.task;
-    const answers=activeWorkflow.answers;
-    const total=activeWorkflow.steps.length;
-    let passed=0;
-    activeWorkflow.steps.forEach(s=>{
-      const v=answers[s.id];
-      if(s.type==="check"&&v)passed++;
-      else if(s.type==="passfail"&&v==="pass")passed++;
-      else if(s.type==="number"&&v!==undefined&&v!=="")passed++;
-      else if(s.type==="select"&&v)passed++;
-      else if(s.type==="text")passed++;
-      else if(s.type==="sign"&&v)passed++;
-      else if(s.type==="photo")passed++;
-    });
-    const score=Math.round((passed/total)*100);
-    const result=COMPLETION_RESULTS.find(r=>Math.abs(r.score-score)<15)||COMPLETION_RESULTS[0];
-    const finalResult={score,summary:result.summary,aiInsight:result.aiInsight};
-
-    const app=APP_CATALOG.find(a=>a.id===task.appId);
-    const goalNames=(app?app.goalIds:[]).map(gId=>{
-      const g=OPERATIONAL_GOALS.find(og=>og.id===gId);
-      return g?g.name:gId;
-    }).slice(0,2);
-
-    setTasks(prev=>prev.map(t=>t.id===task.id?{...t,status:"completed",result:finalResult}:t));
-    const newActivity={
-      id:"a-"+Date.now(),taskId:task.id,timestamp:"Just now",type:"completed",
-      title:task.title,appName:app?app.name:task.appId,appColor:app?app.color:T.accent,
-      goalNames,result:finalResult,aiInsight:finalResult.aiInsight,
-    };
-    setActivities(prev=>[newActivity,...prev]);
-    setActiveWorkflow(null);
-  },[activeWorkflow]);
-
-  const raiseIssue=useCallback((title,description,priority)=>{
-    const newTask={
-      id:"t-issue-"+Date.now(),
-      type:"issue",
-      title,
-      description,
-      appId:null,
-      workflowId:null,
-      goalIds:[],
-      priority,
-      dueTime:null,
-      assignee:"Me",
-      status:"pending",
-    };
-    setTasks(prev=>[newTask,...prev]);
-
-    const newActivity={
-      id:"a-issue-"+Date.now(),
-      taskId:newTask.id,
-      timestamp:"Just now",
-      type:"issue_raised",
-      title,
-      appName:"Reported Issue",
-      appColor:T.rose,
-      goalNames:[],
-      result:{score:null,summary:description},
-      aiInsight:null,
-    };
-    setActivities(prev=>[newActivity,...prev]);
-    setShowIssueForm(false);
-    setShowFab(false);
-  },[]);
-
-  /* Type icon helper */
-  const typeIcon=(type,color)=>{
-    if(type==="inspection")return IC.check(color||T.green,13);
-    if(type==="issue")return IC.bolt(color||T.rose,13);
-    return IC.tasks(color||T.accent,13);
-  };
-  const typeLabel=(type)=>{
-    if(type==="inspection")return"Inspection";
-    if(type==="issue")return"Issue";
-    return"Task";
-  };
-
-  /* Priority color helper */
-  const priColor=(p)=>p==="High"?T.rose:p==="Medium"?T.amber:T.textTertiary;
-  const priSoft=(p)=>p==="High"?T.roseSoft:p==="Medium"?T.amberSoft:T.surfaceMuted;
-
-  /* App lookup helper */
-  const getApp=(appId)=>APP_CATALOG.find(a=>a.id===appId);
-
-  /* Pending and completed counts */
-  const pendingTasks=tasks.filter(t=>t.status==="pending"||t.status==="in_progress");
-  const completedTasks=tasks.filter(t=>t.status==="completed");
-  const completedToday=completedTasks.length;
-
-  return<div style={{flex:1,overflowY:"auto",background:T.bg}}>
-    <style>{`
-      .tp-tab{padding:10px 20px;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:${T.textTertiary};transition:all 0.2s;position:relative}
-      .tp-tab:hover{color:${T.text}}
-      .tp-tab.active{color:${T.accent};border-bottom-color:${T.accent};font-weight:600}
-      .tp-card{background:${T.surface};border:1px solid ${T.border};border-radius:${T.r}px;padding:16px 20px;margin-bottom:8px;transition:all 0.25s;cursor:default}
-      .tp-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.05);transform:translateY(-1px)}
-      .tp-card.completing{opacity:0.7;pointer-events:none}
-      .tp-card.completed{opacity:0.85;border-color:${T.greenBorder}}
-      .tp-fab{position:fixed;bottom:28px;right:28px;width:52px;height:52px;border-radius:50%;background:${T.accent};color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,0.15);transition:all 0.25s;z-index:50}
-      .tp-fab:hover{transform:scale(1.08);box-shadow:0 8px 28px rgba(0,0,0,0.2)}
-      .tp-fab-menu{position:fixed;bottom:88px;right:24px;background:${T.surface};border:1px solid ${T.border};border-radius:${T.r}px;padding:8px 0;box-shadow:0 12px 40px rgba(0,0,0,0.12);z-index:50;min-width:200px}
-      .tp-fab-item{padding:10px 18px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:10px;color:${T.text};transition:background 0.15s}
-      .tp-fab-item:hover{background:${T.surfaceHover}}
-      .tp-timeline{position:relative;padding-left:28px}
-      .tp-timeline::before{content:"";position:absolute;left:11px;top:0;bottom:0;width:1px;background:${T.border}}
-      .tp-tl-dot{position:absolute;left:5px;top:20px;width:13px;height:13px;border-radius:50%;border:2px solid ${T.surface};z-index:1}
-      .tp-progress-bar{height:3px;border-radius:2px;background:${T.borderSubtle};overflow:hidden;margin-top:8px}
-      .tp-progress-fill{height:100%;border-radius:2px;transition:width 2s ease;background:${T.accent}}
-      .tp-issue-form{background:${T.surface};border:1px solid ${T.border};border-radius:${T.r}px;padding:20px;margin-bottom:16px}
-      .tp-input{width:100%;padding:8px 12px;border-radius:${T.rSm}px;border:1px solid ${T.border};background:${T.bg};color:${T.text};font-size:13px;font-family:${T.sans};outline:none;transition:border-color 0.15s}
-      .tp-input:focus{border-color:${T.accent}}
-      @keyframes tpSlideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    `}</style>
-
-    <div style={{maxWidth:720,margin:"0 auto",padding:"0 24px 80px"}}>
-
-      {/* ── Tab Bar ── */}
-      <div style={{display:"flex",borderBottom:`1px solid ${T.border}`,marginBottom:20,position:"sticky",top:0,background:T.bg,zIndex:10,paddingTop:8}}>
-        <div className={`tp-tab${activeTab==="tasks"?" active":""}`} onClick={()=>setActiveTab("tasks")}>
-          My Tasks
-          {pendingTasks.length>0&&<span style={{marginLeft:8,fontSize:10,fontWeight:700,padding:"2px 7px",borderRadius:99,background:T.accentSoft,color:T.accent,fontFamily:T.mono}}>{pendingTasks.length}</span>}
-        </div>
-        <div className={`tp-tab${activeTab==="activity"?" active":""}`} onClick={()=>setActiveTab("activity")}>
-          Activity
-          {completedToday>0&&<span style={{marginLeft:8,fontSize:10,fontWeight:700,padding:"2px 7px",borderRadius:99,background:T.greenSoft,color:T.green,fontFamily:T.mono}}>{completedToday}</span>}
-        </div>
-      </div>
-
-      {/* ══════════════ MY TASKS TAB ══════════════ */}
-      {activeTab==="tasks"&&<div>
-
-        {/* Summary bar */}
-        <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16,padding:"12px 16px",borderRadius:T.r,background:T.surfaceMuted,border:`1px solid ${T.borderSubtle}`}}>
-          <div style={{flex:1}}>
-            <div style={{fontSize:13,fontWeight:500,marginBottom:2}}>{pendingTasks.length} task{pendingTasks.length!==1?"s":""} remaining</div>
-            <div style={{fontSize:11,color:T.textTertiary}}>{completedToday} completed today</div>
-          </div>
-          <div style={{width:120}}>
-            <div className="tp-progress-bar">
-              <div className="tp-progress-fill" style={{width:`${tasks.length>0?Math.round((completedToday/tasks.length)*100):0}%`}}/>
-            </div>
-          </div>
-        </div>
-
-        {/* Issue form (when open) */}
-        {showIssueForm&&<IssueForm onSubmit={raiseIssue} onCancel={()=>{setShowIssueForm(false);setShowFab(false);}}/>}
-
-        {/* Pending tasks */}
-        {pendingTasks.map((task,i)=>{
-          const app=getApp(task.appId);
-          const isCompleting=completing===task.id;
-          return<div key={task.id} className={`tp-card${isCompleting?" completing":""}`} style={{animation:`tpSlideIn ${0.15+i*0.05}s ease both`}}>
-            <div style={{display:"flex",alignItems:"flex-start",gap:12}}>
-              {/* Type icon */}
-              <div style={{width:36,height:36,borderRadius:9,background:task.type==="inspection"?T.greenSoft:task.type==="issue"?T.roseSoft:T.accentSoft,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:2}}>
-                {typeIcon(task.type)}
-              </div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
-                  <span style={{fontSize:14,fontWeight:500,letterSpacing:"-0.01em"}}>{task.title}</span>
-                </div>
-                <div style={{fontSize:12,color:T.textSecondary,lineHeight:1.5,marginBottom:8}}>{task.description}</div>
-                <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-                  <span className="chip" style={{background:priSoft(task.priority),color:priColor(task.priority),fontSize:9}}>{task.priority}</span>
-                  <span className="chip" style={{background:T.surfaceMuted,color:T.textTertiary,fontSize:9}}>{typeLabel(task.type)}</span>
-                  {task.dueTime&&<span className="chip" style={{background:T.surfaceMuted,color:T.textTertiary,fontSize:9}}>{IC.calendar(T.textTertiary,8)} {task.dueTime}</span>}
-                  {task.assignee&&<span className="chip" style={{background:T.surfaceMuted,color:T.textTertiary,fontSize:9}}>{IC.people(T.textTertiary,8)} {task.assignee}</span>}
-                  {app&&<span className="chip" style={{background:`${app.color||T.accent}12`,color:app.color||T.accent,fontSize:9,display:"flex",alignItems:"center",gap:3}}>
-                    <span style={{width:6,height:6,borderRadius:"50%",background:app.color||T.accent,display:"inline-block"}}/>{app.name}
-                  </span>}
-                </div>
-              </div>
-              {/* Start button */}
-              {!isCompleting&&task.type!=="issue"&&<div onClick={()=>startTask(task.id)} style={{padding:"8px 18px",borderRadius:99,background:T.accent,color:"#fff",fontSize:12,fontWeight:600,cursor:"pointer",flexShrink:0,whiteSpace:"nowrap",transition:"opacity 0.15s"}} onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}>Start</div>}
-              {isCompleting&&<div style={{display:"flex",alignItems:"center",gap:6,color:T.accent,fontSize:12,fontWeight:500,flexShrink:0}}><div style={{width:16,height:16,borderRadius:"50%",border:`2px solid ${T.accent}`,borderTopColor:"transparent",animation:"spin 0.8s linear infinite"}}/>Running...</div>}
-            </div>
-            {/* Progress bar during completion */}
-            {isCompleting&&<div className="tp-progress-bar" style={{marginTop:12}}>
-              <div className="tp-progress-fill" style={{width:"90%",transition:"width 2.2s ease"}}/>
-            </div>}
-          </div>;
-        })}
-
-        {/* Completed tasks (collapsed) */}
-        {completedTasks.length>0&&<div style={{marginTop:20}}>
-          <div style={{fontSize:11,fontFamily:T.mono,color:T.textTertiary,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:10,display:"flex",alignItems:"center",gap:6}}>{IC.check(T.green,12)} Completed ({completedTasks.length})</div>
-          {completedTasks.map(task=>{
-            const app=getApp(task.appId);
-            return<div key={task.id} className="tp-card completed" style={{padding:"12px 16px"}}>
-              <div style={{display:"flex",alignItems:"center",gap:10}}>
-                <div style={{width:28,height:28,borderRadius:7,background:T.greenSoft,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{IC.check(T.green,12)}</div>
-                <div style={{flex:1,minWidth:0}}>
-                  <span style={{fontSize:13,fontWeight:500,color:T.textSecondary}}>{task.title}</span>
-                  {task.result&&<span style={{marginLeft:8,fontSize:11,fontFamily:T.mono,color:T.green}}>{task.result.score}/100</span>}
-                </div>
-                {app&&<span style={{fontSize:10,color:T.textTertiary,display:"flex",alignItems:"center",gap:4}}>
-                  <span style={{width:6,height:6,borderRadius:"50%",background:app.color||T.accent}}/>{app.name}
-                </span>}
-              </div>
-              {task.result&&task.result.aiInsight&&<div style={{marginTop:8,marginLeft:38,padding:"6px 10px",borderRadius:T.rSm,background:T.highlightSoft,border:`1px solid ${T.highlightBorder}`,fontSize:11,color:T.highlight,display:"flex",alignItems:"flex-start",gap:6}}>
-                {IC.sparkle(T.highlight,11)}<span>{task.result.aiInsight}</span>
-              </div>}
-            </div>;
-          })}
-        </div>}
-
-        {/* Empty state */}
-        {pendingTasks.length===0&&completedTasks.length===0&&<div style={{textAlign:"center",padding:"48px 20px"}}>
-          <div style={{fontSize:32,marginBottom:12}}>{IC.tasks(T.textTertiary,32)}</div>
-          <div style={{fontSize:14,color:T.textTertiary,marginBottom:8}}>No tasks yet</div>
-          <div style={{fontSize:12,color:T.textTertiary}}>Install apps from the catalog to get tasks assigned to you.</div>
-        </div>}
-
-      </div>}
-
-      {/* ══════════════ ACTIVITY TAB ══════════════ */}
-      {activeTab==="activity"&&<div>
-
-        {activities.length===0&&<div style={{textAlign:"center",padding:"48px 20px"}}>
-          <div style={{fontSize:14,color:T.textTertiary}}>No activity yet. Complete tasks to see your history.</div>
-        </div>}
-
-        <div className="tp-timeline">
-          {activities.map((a,i)=>{
-            const dotColor=a.type==="completed"?T.green:a.type==="issue_raised"?T.rose:T.amber;
-            return<div key={a.id} style={{position:"relative",paddingBottom:20,animation:`tpSlideIn ${0.15+i*0.04}s ease both`}}>
-              <div className="tp-tl-dot" style={{background:dotColor}}/>
-              <div style={{background:T.surface,border:`1px solid ${T.border}`,borderRadius:T.r,padding:"14px 18px"}}>
-                {/* Header row */}
-                <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
-                  <span style={{fontSize:10,fontFamily:T.mono,color:T.textTertiary}}>{a.timestamp}</span>
-                  <span style={{width:1,height:10,background:T.borderSubtle}}/>
-                  <span style={{fontSize:10,color:a.appColor||T.accent,fontWeight:500,display:"flex",alignItems:"center",gap:4}}>
-                    <span style={{width:6,height:6,borderRadius:"50%",background:a.appColor||T.accent}}/>{a.appName}
-                  </span>
-                  {a.type==="issue_raised"&&<span className="chip" style={{background:T.roseSoft,color:T.rose,fontSize:8,padding:"1px 6px"}}>Issue</span>}
-                </div>
-                {/* Title + result */}
-                <div style={{fontSize:13.5,fontWeight:500,letterSpacing:"-0.01em",marginBottom:4}}>{a.title}</div>
-                {a.result&&<div style={{fontSize:12,color:T.textSecondary,lineHeight:1.5,marginBottom:6}}>
-                  {a.result.score!==null&&<span style={{fontFamily:T.mono,fontWeight:600,color:a.result.score>=90?T.green:a.result.score>=70?T.amber:T.rose,marginRight:8}}>{a.result.score}/100</span>}
-                  {a.result.summary}
-                </div>}
-                {/* AI Insight */}
-                {a.aiInsight&&<div style={{padding:"6px 10px",borderRadius:T.rSm,background:T.highlightSoft,border:`1px solid ${T.highlightBorder}`,fontSize:11,color:T.highlight,display:"flex",alignItems:"flex-start",gap:6}}>
-                  {IC.sparkle(T.highlight,11)}<span>{a.aiInsight}</span>
-                </div>}
-                {/* Goal chips */}
-                {a.goalNames&&a.goalNames.length>0&&<div style={{display:"flex",gap:4,flexWrap:"wrap",marginTop:8}}>
-                  {a.goalNames.map((gn,gi)=><span key={gi} className="chip" style={{background:T.surfaceMuted,color:T.textTertiary,fontSize:9}}>{IC.target(T.textTertiary,8)} {gn}</span>)}
-                </div>}
-              </div>
-            </div>;
-          })}
-        </div>
-
-      </div>}
-
-    </div>
-
-    {/* ── Workflow Runner Overlay ── */}
-    {activeWorkflow&&<WorkflowRunner
-      workflow={activeWorkflow}
-      onUpdateAnswer={(stepId,value)=>setActiveWorkflow(prev=>({...prev,answers:{...prev.answers,[stepId]:value}}))}
-      onNext={()=>setActiveWorkflow(prev=>({...prev,stepIndex:Math.min(prev.stepIndex+1,prev.steps.length-1)}))}
-      onPrev={()=>setActiveWorkflow(prev=>({...prev,stepIndex:Math.max(prev.stepIndex-1,0)}))}
-      onComplete={completeWorkflow}
-      onCancel={()=>{setActiveWorkflow(null);setTasks(prev=>prev.map(t=>t.id===activeWorkflow.task.id?{...t,status:"pending"}:t));}}
-    />}
-
-    {/* ── FAB ── */}
-    <div className="tp-fab" onClick={()=>setShowFab(!showFab)} style={{transform:showFab?"rotate(45deg)":"rotate(0)"}}>
-      {IC.plus("#fff",22)}
-    </div>
-    {showFab&&<div className="tp-fab-menu">
-      <div className="tp-fab-item" onClick={()=>{setShowIssueForm(true);setShowFab(false);setActiveTab("tasks");}}>{IC.bolt(T.rose,14)}<span>Raise an Issue</span></div>
-      <div className="tp-fab-item" onClick={()=>{setShowFab(false);}}>{IC.tasks(T.accent,14)}<span>Create Task</span></div>
-    </div>}
-
-    {/* ── Issue Form Overlay ── */}
-    {showIssueForm&&activeTab!=="tasks"&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.3)",zIndex:60,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>setShowIssueForm(false)}>
-      <div onClick={e=>e.stopPropagation()} style={{width:420,maxWidth:"90vw"}}><IssueForm onSubmit={raiseIssue} onCancel={()=>setShowIssueForm(false)}/></div>
-    </div>}
-
-  </div>;
-}
-
-/* ── Issue Form Component ── */
-function IssueForm({onSubmit,onCancel}){
-  const[title,setTitle]=useState("");
-  const[desc,setDesc]=useState("");
-  const[priority,setPriority]=useState("Medium");
-  return<div className="tp-issue-form" style={{animation:"tpSlideIn 0.2s ease"}}>
-    <div style={{fontSize:14,fontWeight:600,marginBottom:14,display:"flex",alignItems:"center",gap:8}}>{IC.bolt(T.rose,15)} Raise an Issue</div>
-    <div style={{marginBottom:10}}>
-      <label style={{fontSize:11,fontWeight:500,color:T.textSecondary,marginBottom:4,display:"block"}}>Title</label>
-      <input className="tp-input" value={title} onChange={e=>setTitle(e.target.value)} placeholder="What's the issue?"/>
-    </div>
-    <div style={{marginBottom:10}}>
-      <label style={{fontSize:11,fontWeight:500,color:T.textSecondary,marginBottom:4,display:"block"}}>Description</label>
-      <textarea className="tp-input" value={desc} onChange={e=>setDesc(e.target.value)} placeholder="Add details..." rows={3} style={{resize:"vertical"}}/>
-    </div>
-    <div style={{marginBottom:14}}>
-      <label style={{fontSize:11,fontWeight:500,color:T.textSecondary,marginBottom:4,display:"block"}}>Priority</label>
-      <div style={{display:"flex",gap:6}}>
-        {["High","Medium","Low"].map(p=><div key={p} onClick={()=>setPriority(p)} style={{flex:1,padding:"7px 0",borderRadius:T.rSm,textAlign:"center",fontSize:12,fontWeight:priority===p?600:400,background:priority===p?(p==="High"?T.roseSoft:p==="Medium"?T.amberSoft:T.surfaceMuted):"transparent",color:priority===p?(p==="High"?T.rose:p==="Medium"?T.amber:T.textTertiary):T.textTertiary,border:`1px solid ${priority===p?(p==="High"?T.roseBorder:p==="Medium"?T.amberBorder:T.border):T.border}`,cursor:"pointer",transition:"all 0.15s"}}>{p}</div>)}
-      </div>
-    </div>
-    <div style={{display:"flex",gap:8,justifyContent:"flex-end"}}>
-      <div onClick={onCancel} style={{padding:"8px 16px",borderRadius:99,background:T.surfaceMuted,border:`1px solid ${T.border}`,fontSize:12,color:T.textSecondary,cursor:"pointer"}}>Cancel</div>
-      <div onClick={()=>{if(title.trim())onSubmit(title,desc,priority);}} style={{padding:"8px 18px",borderRadius:99,background:title.trim()?T.accent:T.surfaceMuted,color:title.trim()?"#fff":T.textTertiary,fontSize:12,fontWeight:600,cursor:title.trim()?"pointer":"default",transition:"all 0.15s"}}>{IC.bolt("#fff",11)} Submit Issue</div>
-    </div>
-  </div>;
-}
-
-/* ═══ WORKFLOW RUNNER ═══ */
-function WorkflowRunner({workflow,onUpdateAnswer,onNext,onPrev,onComplete,onCancel}){
-  const{task,templateName,steps,answers}=workflow;
-  const app=APP_CATALOG.find(a=>a.id===task.appId);
-
-  /* Count answered */
-  const answered=steps.filter(s=>{
-    const v=answers[s.id];
-    if(s.type==="check")return!!v;
-    if(s.type==="passfail")return v==="pass"||v==="fail";
-    if(s.type==="number")return v!==undefined&&v!=="";
-    if(s.type==="select")return!!v;
-    if(s.type==="text")return(v||"").length>0;
-    if(s.type==="sign")return!!v;
-    if(s.type==="photo")return!!v;
-    return false;
-  }).length;
-  const pct=Math.round((answered/steps.length)*100);
-
-  /* All required answered? */
-  const allRequiredDone=steps.every(s=>{
-    if(!s.required)return true;
-    const v=answers[s.id];
-    if(s.type==="check")return!!v;
-    if(s.type==="passfail")return v==="pass"||v==="fail";
-    if(s.type==="number")return v!==undefined&&v!=="";
-    if(s.type==="select")return!!v;
-    if(s.type==="sign")return!!v;
-    return true;
-  });
-
-  const inputStyle={width:"100%",padding:"10px 14px",borderRadius:T.rSm,border:`1px solid ${T.border}`,background:T.bg,color:T.text,fontSize:14,fontFamily:T.sans,outline:"none",transition:"border-color 0.15s"};
-  const typeLabel=(t)=>t==="check"?"Checklist":t==="passfail"?"Pass / Fail":t==="number"?"Measurement":t==="select"?"Selection":t==="text"?"Notes":t==="sign"?"Sign-off":"Input";
-
-  return<div style={{position:"fixed",inset:0,zIndex:100,background:T.bg,display:"flex",flexDirection:"column",animation:"tpSlideIn 0.25s ease"}}>
-
-    {/* ── Sticky Header ── */}
-    <div style={{padding:"14px 20px",borderBottom:`1px solid ${T.border}`,display:"flex",alignItems:"center",gap:12,background:T.surface,flexShrink:0}}>
-      <div onClick={onCancel} style={{width:34,height:34,borderRadius:9,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",border:`1px solid ${T.border}`,background:T.surfaceMuted,transition:"all 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor=T.accentBorder} onMouseLeave={e=>e.currentTarget.style.borderColor=T.border}>
-        {IC.x(T.textSecondary,14)}
-      </div>
-      <div style={{flex:1,minWidth:0}}>
-        <div style={{fontSize:14,fontWeight:600,letterSpacing:"-0.01em",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{templateName||task.title}</div>
-        <div style={{fontSize:11,color:T.textTertiary,display:"flex",alignItems:"center",gap:6,marginTop:1}}>
-          {app&&<><span style={{width:6,height:6,borderRadius:"50%",background:app.color||T.accent,display:"inline-block"}}/><span>{app.name}</span><span style={{color:T.borderSubtle}}>{"\u00b7"}</span></>}
-          <span>{answered} of {steps.length} completed</span>
-        </div>
-      </div>
-      <div style={{fontSize:13,fontWeight:600,fontFamily:T.mono,color:T.accent}}>{pct}%</div>
-    </div>
-
-    {/* ── Progress bar ── */}
-    <div style={{height:3,background:T.borderSubtle,flexShrink:0}}>
-      <div style={{height:"100%",background:T.accent,borderRadius:"0 2px 2px 0",transition:"width 0.3s ease",width:`${pct}%`}}/>
-    </div>
-
-    {/* ── All Steps (scrollable) ── */}
-    <div style={{flex:1,overflowY:"auto",padding:"24px 20px 100px",WebkitOverflowScrolling:"touch"}}>
-      <div style={{maxWidth:520,margin:"0 auto",display:"flex",flexDirection:"column",gap:0}}>
-        {steps.map((step,idx)=>{
-          const v=answers[step.id];
-          const isDone=(step.type==="check"&&!!v)||(step.type==="passfail"&&(v==="pass"||v==="fail"))||(step.type==="number"&&v!==undefined&&v!=="")||(step.type==="select"&&!!v)||(step.type==="sign"&&!!v)||(step.type==="photo"&&!!v)||(step.type==="text"&&(v||"").length>0);
-
-          return<div key={step.id} style={{paddingBottom:28,marginBottom:28,borderBottom:idx<steps.length-1?`1px solid ${T.borderSubtle}`:"none"}}>
-            {/* Step header row */}
-            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
-              <div style={{width:28,height:28,borderRadius:"50%",background:isDone?T.green:T.accentSoft,color:isDone?"#fff":T.accent,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,fontFamily:T.mono,transition:"all 0.2s",flexShrink:0}}>
-                {isDone?IC.check("#fff",12):idx+1}
-              </div>
-              <div style={{fontSize:10,textTransform:"uppercase",letterSpacing:"0.06em",fontFamily:T.mono,color:T.textTertiary}}>{typeLabel(step.type)}</div>
-              {step.required&&<span className="chip" style={{background:T.roseSoft,color:T.rose,fontSize:8,padding:"1px 6px"}}>Required</span>}
-            </div>
-
-            {/* Label */}
-            <div style={{fontSize:16,fontWeight:500,fontFamily:T.serif,letterSpacing:"-0.02em",lineHeight:1.4,marginBottom:16,color:T.text}}>{step.label}</div>
-
-            {/* ── Field by type ── */}
-
-            {step.type==="check"&&<div onClick={()=>onUpdateAnswer(step.id,!v)} style={{display:"flex",alignItems:"center",gap:14,padding:"14px 18px",borderRadius:T.r,border:`1px solid ${v?T.greenBorder:T.border}`,background:v?T.greenSoft:T.surface,cursor:"pointer",transition:"all 0.2s"}}>
-              <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${v?T.green:T.border}`,background:v?T.green:"transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",flexShrink:0}}>
-                {v&&IC.check("#fff",12)}
-              </div>
-              <span style={{fontSize:13,fontWeight:500,color:v?T.green:T.text}}>{v?"Confirmed":"Tap to confirm"}</span>
-            </div>}
-
-            {step.type==="passfail"&&<div style={{display:"flex",gap:10}}>
-              {[{val:"pass",label:"Pass",color:T.green,soft:T.greenSoft,border:T.greenBorder,icon:IC.check},{val:"fail",label:"Fail",color:T.rose,soft:T.roseSoft,border:T.roseBorder,icon:IC.x}].map(opt=>{
-                const active=v===opt.val;
-                return<div key={opt.val} onClick={()=>onUpdateAnswer(step.id,opt.val)} style={{flex:1,padding:"16px 14px",borderRadius:T.r,border:`2px solid ${active?opt.border:T.border}`,background:active?opt.soft:T.surface,cursor:"pointer",textAlign:"center",transition:"all 0.2s"}}>
-                  <div style={{marginBottom:6}}>{opt.icon(active?opt.color:T.textTertiary,24)}</div>
-                  <div style={{fontSize:13,fontWeight:600,color:active?opt.color:T.textSecondary}}>{opt.label}</div>
-                </div>;
-              })}
-            </div>}
-
-            {step.type==="number"&&<div>
-              <div style={{position:"relative"}}>
-                <input type="number" value={v||""} onChange={e=>onUpdateAnswer(step.id,e.target.value)} placeholder={step.placeholder||"Enter value"} style={{...inputStyle,fontSize:20,fontFamily:T.mono,fontWeight:600,padding:"14px 56px 14px 18px"}} onFocus={e=>e.target.style.borderColor=T.accent} onBlur={e=>e.target.style.borderColor=T.border}/>
-                {step.unit&&<span style={{position:"absolute",right:18,top:"50%",transform:"translateY(-50%)",fontSize:13,color:T.textTertiary,fontFamily:T.mono}}>{step.unit}</span>}
-              </div>
-              {step.min!==undefined&&<div style={{marginTop:6,fontSize:11,color:T.textTertiary,fontFamily:T.mono}}>Range: {step.min} – {step.max} {step.unit||""}</div>}
-            </div>}
-
-            {step.type==="select"&&<div style={{display:"flex",flexDirection:"column",gap:6}}>
-              {(step.options||[]).map(opt=>{
-                const active=v===opt;
-                return<div key={opt} onClick={()=>onUpdateAnswer(step.id,opt)} style={{padding:"12px 16px",borderRadius:T.r,border:`2px solid ${active?T.accentBorder:T.border}`,background:active?T.accentSoft:T.surface,cursor:"pointer",fontSize:13,fontWeight:active?600:400,color:active?T.accent:T.text,transition:"all 0.15s",display:"flex",alignItems:"center",gap:10}}>
-                  <div style={{width:16,height:16,borderRadius:"50%",border:`2px solid ${active?T.accent:T.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                    {active&&<div style={{width:8,height:8,borderRadius:"50%",background:T.accent}}/>}
-                  </div>
-                  {opt}
-                </div>;
-              })}
-            </div>}
-
-            {step.type==="text"&&<textarea value={v||""} onChange={e=>onUpdateAnswer(step.id,e.target.value)} placeholder={step.placeholder||"Add notes..."} rows={3} style={{...inputStyle,resize:"vertical",lineHeight:1.6}} onFocus={e=>e.target.style.borderColor=T.accent} onBlur={e=>e.target.style.borderColor=T.border}/>}
-
-            {step.type==="sign"&&<div>
-              {!v
-                ?<div onClick={()=>onUpdateAnswer(step.id,"signed-"+Date.now())} style={{padding:"20px 18px",borderRadius:T.r,border:`2px dashed ${T.border}`,background:T.surfaceMuted,cursor:"pointer",textAlign:"center",transition:"all 0.2s"}} onMouseEnter={e=>{e.currentTarget.style.borderColor=T.accent;e.currentTarget.style.background=T.accentSoft;}} onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.background=T.surfaceMuted;}}>
-                  <div style={{fontSize:13,color:T.textSecondary,fontWeight:500}}>Tap to sign off</div>
-                </div>
-                :<div style={{padding:"16px",borderRadius:T.r,border:`2px solid ${T.greenBorder}`,background:T.greenSoft,textAlign:"center"}}>
-                  <div style={{fontSize:13,fontWeight:600,color:T.green}}>{IC.check(T.green,14)} Signed</div>
-                </div>
-              }
-            </div>}
-
-            {step.type==="photo"&&<div onClick={()=>onUpdateAnswer(step.id,v?"":"photo-"+Date.now())} style={{padding:"24px 18px",borderRadius:T.r,border:`2px dashed ${v?T.greenBorder:T.border}`,background:v?T.greenSoft:T.surfaceMuted,cursor:"pointer",textAlign:"center",transition:"all 0.2s"}}>
-              <div style={{fontSize:13,color:v?T.green:T.textSecondary,fontWeight:500}}>{v?"Photo captured":"Tap to take photo"}</div>
-            </div>}
-
-          </div>;
-        })}
-      </div>
-    </div>
-
-    {/* ── Sticky Footer ── */}
-    <div style={{padding:"14px 20px",borderTop:`1px solid ${T.border}`,background:T.surface,display:"flex",alignItems:"center",gap:12,flexShrink:0}}>
-      <div onClick={onCancel} style={{padding:"10px 20px",borderRadius:99,background:T.surfaceMuted,border:`1px solid ${T.border}`,fontSize:13,color:T.textSecondary,cursor:"pointer",fontWeight:500}}>Cancel</div>
-      <div style={{flex:1}}/>
-      <div onClick={allRequiredDone?onComplete:undefined} style={{padding:"10px 24px",borderRadius:99,background:allRequiredDone?T.green:T.surfaceMuted,color:allRequiredDone?"#fff":T.textTertiary,fontSize:13,fontWeight:600,cursor:allRequiredDone?"pointer":"default",display:"flex",alignItems:"center",gap:6,transition:"all 0.15s"}}>
-        {IC.check(allRequiredDone?"#fff":T.textTertiary,13)} Complete
-      </div>
-    </div>
-  </div>;
-}
-
 /* ═══ HASH ROUTING ═══ */
 function parseHash(){
   const h=(window.location.hash||"").replace(/^#\/?/,"");
@@ -8884,7 +7717,7 @@ function parseHash(){
   if(h==="home") return{phase:"workspace",page:"home",homeTab:"dashboard",appId:null};
   /* App detail route: #app/:appId */
   if(h.startsWith("app/")){const aId=h.slice(4);return{phase:"workspace",page:"catalog",homeTab:"dashboard",appId:aId};}
-  const validPages=["builder","connect","connectors","goals","people","catalog","tasks","registers"];
+  const validPages=["builder","connect","connectors","goals","people","catalog"];
   if(validPages.includes(h)) return{phase:"workspace",page:h,homeTab:"dashboard",appId:null};
   return{phase:"workspace",page:"home",homeTab:"dashboard",appId:null};
 }
@@ -9012,8 +7845,6 @@ function App(){
   const isConnectors=page==="connectors";
   const isGoals=page==="goals";
   const isPeople=page==="people";
-  const isTasks=page==="tasks";
-  const isRegisters=page==="registers";
   const isCatalog=page==="catalog"&&!appDetailId;
   const isAppDetail=page==="catalog"&&!!appDetailId;
 
@@ -9116,7 +7947,7 @@ function App(){
               <div className="tb-icon">{IC.undo(T.textSecondary)}</div>
               <div className="tb-icon">{IC.redo(T.textSecondary)}</div>
             </div>
-          </>:<span style={{fontFamily:T.serif,fontSize:17,fontWeight:500,letterSpacing:"-0.02em"}}>{isConnect?"Workspace Setup":isConnectors?"Connectors":isGoals?"Goals":isPeople?"People":isTasks?"Tasks":isRegisters?"Data Tables":isAppDetail?(APP_CATALOG.find(a=>a.id===appDetailId)||{}).name||"App":isCatalog?"Catalog":"Home"}</span>}
+          </>:<span style={{fontFamily:T.serif,fontSize:17,fontWeight:500,letterSpacing:"-0.02em"}}>{isConnect?"Workspace Setup":isConnectors?"Connectors":isGoals?"Goals":isPeople?"People":isAppDetail?(APP_CATALOG.find(a=>a.id===appDetailId)||{}).name||"App":isCatalog?"Catalog":"Home"}</span>}
         </div>
         {/* Center area */}
         {isBuilder&&<div style={{position:"absolute",left:"50%",transform:"translateX(-50%)"}}>
@@ -9136,7 +7967,7 @@ function App(){
       </div>
 
       {/* Page content */}
-      {page==="home"&&<HomeContent homeTab={homeTab} setHomeTab={setHomeTabWithHash} chatMessages={chatMessages} setChatMessages={setChatMessages} pinnedWidgets={pinnedWidgets} pinWidget={pinWidget} unpinWidget={unpinWidget} overallPct={readinessPct} setConnectOpen={()=>navigate("connect")} industry={onboardIndustry} fromChatOnboarding={fromChatOnboarding} focusGoalName={focusGoalName} selectedGoals={selectedGoals} customGoals={customGoals} installedApps={installedApps} addedWorkflows={addedWorkflows} setAddedWorkflows={setAddedWorkflows} onNavigate={navigate}/>}
+      {page==="home"&&<HomeContent homeTab={homeTab} setHomeTab={setHomeTabWithHash} chatMessages={chatMessages} setChatMessages={setChatMessages} pinnedWidgets={pinnedWidgets} pinWidget={pinWidget} unpinWidget={unpinWidget} overallPct={readinessPct} setConnectOpen={()=>navigate("connect")} industry={onboardIndustry} fromChatOnboarding={fromChatOnboarding} focusGoalName={focusGoalName} selectedGoals={selectedGoals} addedWorkflows={addedWorkflows} setAddedWorkflows={setAddedWorkflows} onNavigate={navigate}/>}
       {page==="builder"&&<div style={{flex:1,display:"flex",flexDirection:"column",overflow:"hidden",position:"relative"}}>
         {builderMode==="build"?<BuildMode/>:<EditMode/>}
       </div>}
@@ -9144,8 +7975,6 @@ function App(){
       {page==="connectors"&&<ConnectorsPage/>}
       {page==="goals"&&<GoalsPage industry={onboardIndustry} persona={onboardPersona} selectedGoals={selectedGoals} setSelectedGoals={setSelectedGoals} customGoals={customGoals} setCustomGoals={setCustomGoals} onNavigate={navigate}/>}
       {page==="people"&&<PeoplePage/>}
-      {page==="tasks"&&<TasksPage industry={onboardIndustry} installedApps={installedApps} selectedGoals={selectedGoals}/>}
-      {page==="registers"&&<RegistersPage industry={onboardIndustry}/>}
       {page==="catalog"&&!appDetailId&&<CatalogPage installedApps={installedApps} setInstalledApps={setInstalledApps} onNavigate={(target)=>{if(APP_CATALOG.find(a=>a.id===target)){setAppDetailId(target);window.location.hash="#app/"+target;}else{navigate(target);}}} industry={onboardIndustry} addedConnectors={addedConnectors}/>}
       {page==="catalog"&&appDetailId&&<AppDetailPage appId={appDetailId} industry={onboardIndustry} addedConnectors={addedConnectors} onBack={()=>{setAppDetailId(null);window.location.hash="#catalog";}} onNavigate={navigate}/>}
     </div>

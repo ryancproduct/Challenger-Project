@@ -26,8 +26,8 @@ function ChatOnboarding({onComplete,setIndustry,setPersona,setSelectedGoals,setF
       {type:"text",content:"First \u2014 what's your name and company?"},
     ]},
     {id:"u-pre-1",role:"user",text:"Michael, RC Marine Ops"},
+    {id:"card-pre",role:"company-card",name:"Michael",company:"RC Marine Ops",website:"rcmarineops.com",logo:"/RCMarineLogo.png"},
     {id:"ai-pre-2",role:"ai",parts:[
-      {type:"company-card",name:"Michael",company:"RC Marine Ops",website:"rcmarineops.com"},
       {type:"text",content:"Is that right?"},
     ]},
     {id:"u-pre-2",role:"user",text:"That's correct"},
@@ -265,19 +265,6 @@ function ChatOnboarding({onComplete,setIndustry,setPersona,setSelectedGoals,setF
       </div>;
     }
 
-    if(part.type==="company-card"){
-      return<div key={idx} style={{display:"flex",alignItems:"center",gap:14,padding:"14px 16px",borderRadius:14,background:`${T.accent}06`,border:`1px solid ${T.border}`,marginTop:4,marginBottom:2}}>
-        <div style={{width:44,height:44,borderRadius:12,background:T.accent,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,boxShadow:"0 2px 8px rgba(28,25,23,0.1)"}}>
-          {IC.home("#fff",18)}
-        </div>
-        <div style={{flex:1,minWidth:0}}>
-          <div style={{fontSize:15,fontWeight:600,letterSpacing:"-0.02em",fontFamily:T.serif}}>Hi, {part.name}!</div>
-          <div style={{fontSize:12.5,color:T.textSecondary,marginTop:2}}>{part.company}</div>
-          <div style={{fontSize:11,color:T.textTertiary,fontFamily:T.mono,marginTop:2}}>{part.website}</div>
-        </div>
-      </div>;
-    }
-
     if(part.type==="action-btns"){
       const disabled=step!==part.key;
       return<div key={idx} style={{display:"flex",gap:8,marginTop:8,flexWrap:"wrap"}}>
@@ -361,6 +348,25 @@ function ChatOnboarding({onComplete,setIndustry,setPersona,setSelectedGoals,setF
             if(msg.role==="user"){
               return<div key={msg.id} className="cob-user">
                 <div className="cob-user-bubble">{msg.text}</div>
+              </div>;
+            }
+            if(msg.role==="company-card"){
+              return<div key={msg.id} style={{animation:"fadeInUp 0.4s cubic-bezier(0.4,0,0.2,1)",maxWidth:380,width:"100%",alignSelf:"center"}}>
+                <div style={{background:T.surface,border:`1px solid ${T.border}`,borderRadius:20,padding:"22px 22px 18px",boxShadow:"0 4px 24px rgba(28,25,23,0.08), 0 1px 4px rgba(28,25,23,0.04)",overflow:"hidden",position:"relative"}}>
+                  <div style={{position:"absolute",top:0,left:0,right:0,height:4,background:`linear-gradient(90deg, ${T.accent}, ${T.green})`}}/>
+                  <div style={{display:"flex",alignItems:"center",gap:16,marginTop:4}}>
+                    <img src={msg.logo} alt={msg.company} style={{width:52,height:52,borderRadius:14,objectFit:"cover",border:`1px solid ${T.border}`,flexShrink:0}}/>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:11,fontFamily:T.mono,color:T.textTertiary,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:3}}>Company found</div>
+                      <div style={{fontSize:16,fontWeight:600,letterSpacing:"-0.02em",fontFamily:T.serif}}>{msg.company}</div>
+                      <div style={{fontSize:11.5,color:T.textTertiary,fontFamily:T.mono,marginTop:2}}>{msg.website}</div>
+                    </div>
+                  </div>
+                  <div style={{marginTop:14,paddingTop:14,borderTop:`1px solid ${T.borderSubtle}`,display:"flex",alignItems:"center",gap:8}}>
+                    <div style={{fontSize:14.5,fontWeight:500,letterSpacing:"-0.01em"}}>Hi, {msg.name}!</div>
+                    <div style={{fontSize:13,color:T.textTertiary}}>Welcome to Flows</div>
+                  </div>
+                </div>
               </div>;
             }
             return<div key={msg.id} className="cob-ai">
