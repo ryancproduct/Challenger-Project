@@ -298,7 +298,7 @@ function App(){
               <div className="tb-icon">{IC.undo(T.textSecondary)}</div>
               <div className="tb-icon">{IC.redo(T.textSecondary)}</div>
             </div>
-          </>:<span style={{fontFamily:T.serif,fontSize:17,fontWeight:500,letterSpacing:"-0.02em"}}>{isConnect?"Workspace Setup":isConnectors?"Connectors":isGoals?"Goals":isPeople?"People":isTasks?"Tasks":isScore?"Score":isRegisters?"Data Tables":isAppDetail?(APP_CATALOG.find(a=>a.id===appDetailId)||{}).name||"App":isCatalog?"Catalog":"Home"}</span>}
+          </>:<span style={{fontFamily:T.serif,fontSize:17,fontWeight:500,letterSpacing:"-0.02em"}}>{isConnect?"Workspace Setup":isConnectors?"Connectors":isGoals?"Goals":isPeople?"People":isTasks?"Tasks":isScore?"Score":isRegisters?"Data":isAppDetail?(APP_CATALOG.find(a=>a.id===appDetailId)||{}).name||"App":isCatalog?"Catalog":"Home"}</span>}
         </div>
         {/* Center area */}
         {isBuilder&&<div style={{position:"absolute",left:"50%",transform:"translateX(-50%)"}}>
