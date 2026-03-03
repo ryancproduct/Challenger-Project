@@ -600,6 +600,161 @@ const PEOPLE_ASSETS_TEMPLATES={
   },
 };
 
+/* ═══ WORKFLOW STEP TEMPLATES ═══ */
+/* Step types: check (checkbox), text (free text), number (numeric input), select (dropdown), passfail, photo, sign */
+const WORKFLOW_STEP_TEMPLATES={
+  "wf-quality-audit":{name:"Quality Inspection Checklist",steps:[
+    {id:"s1",type:"check",label:"PPE worn by all personnel on line",required:true},
+    {id:"s2",type:"check",label:"Work area clean and free of debris",required:true},
+    {id:"s3",type:"passfail",label:"Raw material labels match batch records"},
+    {id:"s4",type:"number",label:"Ambient temperature (°C)",placeholder:"e.g. 22",unit:"°C",min:15,max:35},
+    {id:"s5",type:"select",label:"Line status",options:["Running","Idle","Changeover","Down"]},
+    {id:"s6",type:"check",label:"Calibration stickers current on all gauges",required:true},
+    {id:"s7",type:"passfail",label:"Product dimensions within tolerance"},
+    {id:"s8",type:"text",label:"Observations / notes",placeholder:"Any findings to note...",required:false},
+    {id:"s9",type:"sign",label:"Inspector sign-off"},
+  ]},
+  "wf-opening-checklist":{name:"Opening Checklist",steps:[
+    {id:"s1",type:"check",label:"Floors swept and mopped",required:true},
+    {id:"s2",type:"check",label:"Restrooms clean and stocked",required:true},
+    {id:"s3",type:"number",label:"Walk-in cooler temp (°F)",placeholder:"e.g. 38",unit:"°F",min:32,max:41},
+    {id:"s4",type:"number",label:"Walk-in freezer temp (°F)",placeholder:"e.g. -2",unit:"°F",min:-10,max:5},
+    {id:"s5",type:"passfail",label:"All equipment powered on and functional"},
+    {id:"s6",type:"check",label:"Prep stations sanitised",required:true},
+    {id:"s7",type:"check",label:"Cash register counted and verified",required:true},
+    {id:"s8",type:"select",label:"Staffing level",options:["Full","One short","Two short","Critical"]},
+    {id:"s9",type:"text",label:"Notes for shift",placeholder:"Anything to flag...",required:false},
+    {id:"s10",type:"sign",label:"Manager sign-off"},
+  ]},
+  "wf-pre-trip":{name:"Pre-Trip Vehicle Inspection",steps:[
+    {id:"s1",type:"passfail",label:"Engine oil level"},
+    {id:"s2",type:"passfail",label:"Coolant level"},
+    {id:"s3",type:"number",label:"Tyre pressure — front left (PSI)",placeholder:"e.g. 105",unit:"PSI",min:80,max:130},
+    {id:"s4",type:"number",label:"Tyre pressure — front right (PSI)",placeholder:"e.g. 105",unit:"PSI",min:80,max:130},
+    {id:"s5",type:"passfail",label:"All lights and indicators functional"},
+    {id:"s6",type:"passfail",label:"Brakes — pedal firm, no unusual noise"},
+    {id:"s7",type:"check",label:"Fire extinguisher present and charged",required:true},
+    {id:"s8",type:"check",label:"First aid kit present",required:true},
+    {id:"s9",type:"select",label:"Vehicle condition",options:["Good","Minor issues","Needs attention","Unsafe"]},
+    {id:"s10",type:"text",label:"Notes / defects",placeholder:"Describe any issues...",required:false},
+    {id:"s11",type:"sign",label:"Driver sign-off"},
+  ]},
+  "wf-observation":{name:"Raise Observation",steps:[
+    {id:"s1",type:"select",label:"Observation type",options:["Safety","Quality","Maintenance","Environmental","Positive"]},
+    {id:"s2",type:"text",label:"What did you observe?",placeholder:"Describe what you saw...",required:true},
+    {id:"s3",type:"select",label:"Severity",options:["Low — informational","Medium — needs attention","High — immediate action required"]},
+    {id:"s4",type:"text",label:"Location / area",placeholder:"e.g. Line 3, Loading dock B...",required:false},
+    {id:"s5",type:"photo",label:"Photo (optional)"},
+    {id:"s6",type:"sign",label:"Observer sign-off"},
+  ]},
+  "wf-issue-report":{name:"Log Issue",steps:[
+    {id:"s1",type:"text",label:"What happened?",placeholder:"Describe the issue...",required:true},
+    {id:"s2",type:"select",label:"Severity",options:["Minor — no immediate risk","Moderate — needs follow-up","Major — safety or compliance risk","Critical — stop work"]},
+    {id:"s3",type:"select",label:"Category",options:["Equipment failure","Safety incident","Quality defect","Near miss","Environmental","Process deviation"]},
+    {id:"s4",type:"text",label:"Who is involved?",placeholder:"Names or roles affected...",required:false},
+    {id:"s5",type:"text",label:"Immediate action taken",placeholder:"What did you do to address it?",required:false},
+    {id:"s6",type:"photo",label:"Photo evidence"},
+    {id:"s7",type:"sign",label:"Reporter sign-off"},
+  ]},
+  "_default":{name:"Workflow",steps:[
+    {id:"s1",type:"check",label:"Area inspected and clear",required:true},
+    {id:"s2",type:"check",label:"Equipment functioning correctly",required:true},
+    {id:"s3",type:"passfail",label:"Conditions within acceptable range"},
+    {id:"s4",type:"text",label:"Observations",placeholder:"Any notes...",required:false},
+    {id:"s5",type:"sign",label:"Sign-off"},
+  ]},
+};
+
+/* ═══ WORKER DIRECTORY DATA ═══ */
+const WORKER_SITES_BY_INDUSTRY = {
+  manufacturing: [
+    { id: "plant-a", name: "Levin Plant", type: "Manufacturing" },
+    { id: "plant-b", name: "Auckland Depot", type: "Warehouse" },
+    { id: "hq", name: "HQ — Wellington", type: "Office" },
+  ],
+  qsr: [
+    { id: "store-1", name: "CBD Flagship", type: "Restaurant" },
+    { id: "store-2", name: "Westfield Mall", type: "Restaurant" },
+    { id: "commissary", name: "Central Kitchen", type: "Commissary" },
+  ],
+  "transport-logistics": [
+    { id: "depot-a", name: "Auckland Hub", type: "Depot" },
+    { id: "depot-b", name: "Christchurch Terminal", type: "Terminal" },
+    { id: "hq", name: "HQ — Wellington", type: "Office" },
+  ],
+};
+
+const WORKER_DEPTS_BY_INDUSTRY = {
+  manufacturing: ["Operations", "Quality Assurance", "Maintenance", "Safety & Compliance", "Logistics"],
+  qsr: ["Front of House", "Kitchen", "Management", "Training", "Delivery"],
+  "transport-logistics": ["Fleet Operations", "Dispatch", "Warehousing", "Compliance", "Customer Service"],
+};
+
+const WORKERS_BY_INDUSTRY = {
+  manufacturing: [
+    { id: "m1", name: "John Doe", role: "Crane Operator", site: "plant-a", dept: "Operations", status: "on-site", hoursThisWeek: "38h 45m", credentials: { valid: 11, expiring: 1, expired: 0 }, trainingPct: 98, riskLevel: "medium", email: "john@levinplant.co.nz", startDate: "Mar 2019", supervisor: "Lisa Johnson", employeeId: "W-001", isContractor: false },
+    { id: "m2", name: "Sarah Mitchell", role: "Electrician", site: "plant-a", dept: "Maintenance", status: "on-site", hoursThisWeek: "42h 15m", credentials: { valid: 8, expiring: 0, expired: 0 }, trainingPct: 100, riskLevel: "high", email: "sarah@levinplant.co.nz", startDate: "Jan 2020", supervisor: "Lisa Johnson", employeeId: "W-002", isContractor: false },
+    { id: "m3", name: "Mike Brown", role: "Forklift Operator", site: "plant-b", dept: "Logistics", status: "on-site", hoursThisWeek: "35h 30m", credentials: { valid: 5, expiring: 0, expired: 1 }, trainingPct: 72, riskLevel: "low", email: "mike@levinplant.co.nz", startDate: "Aug 2021", supervisor: "James Park", employeeId: "W-003", isContractor: false },
+    { id: "m4", name: "Tom Wilson", role: "Welder", site: "plant-a", dept: "Operations", status: "off-site", hoursThisWeek: "24h 00m", credentials: { valid: 4, expiring: 0, expired: 0 }, trainingPct: 100, riskLevel: "extreme", email: "tom@contractor.co.nz", startDate: "Jun 2024", supervisor: "Lisa Johnson", employeeId: "C-001", isContractor: true },
+    { id: "m5", name: "Lisa Johnson", role: "Safety Officer", site: "plant-a", dept: "Safety & Compliance", status: "on-site", hoursThisWeek: "40h 00m", credentials: { valid: 15, expiring: 0, expired: 0 }, trainingPct: 100, riskLevel: "low", email: "lisa@levinplant.co.nz", startDate: "Feb 2017", supervisor: "Paul Hayes", employeeId: "W-004", isContractor: false },
+    { id: "m6", name: "Carlos Mendez", role: "Machine Operator", site: "plant-b", dept: "Operations", status: "on-site", hoursThisWeek: "36h 20m", credentials: { valid: 6, expiring: 1, expired: 0 }, trainingPct: 85, riskLevel: "medium", email: "carlos@levinplant.co.nz", startDate: "Nov 2022", supervisor: "James Park", employeeId: "W-005", isContractor: false },
+    { id: "m7", name: "Priya Patel", role: "Quality Inspector", site: "hq", dept: "Quality Assurance", status: "on-site", hoursThisWeek: "39h 10m", credentials: { valid: 9, expiring: 0, expired: 0 }, trainingPct: 95, riskLevel: "low", email: "priya@levinplant.co.nz", startDate: "Apr 2020", supervisor: "Paul Hayes", employeeId: "W-006", isContractor: false },
+    { id: "m8", name: "David Kim", role: "Maintenance Tech", site: "plant-a", dept: "Maintenance", status: "leave", hoursThisWeek: "0h 00m", credentials: { valid: 7, expiring: 0, expired: 0 }, trainingPct: 90, riskLevel: "low", email: "david@levinplant.co.nz", startDate: "Sep 2021", supervisor: "Sarah Mitchell", employeeId: "W-007", isContractor: false },
+    { id: "m9", name: "Emily Foster", role: "Process Engineer", site: "hq", dept: "Operations", status: "on-site", hoursThisWeek: "41h 30m", credentials: { valid: 10, expiring: 0, expired: 0 }, trainingPct: 100, riskLevel: "low", email: "emily@levinplant.co.nz", startDate: "Mar 2018", supervisor: "Paul Hayes", employeeId: "W-008", isContractor: false },
+    { id: "m10", name: "Jake Rivera", role: "Rigger", site: "plant-a", dept: "Operations", status: "on-site", hoursThisWeek: "37h 00m", credentials: { valid: 8, expiring: 2, expired: 0 }, trainingPct: 78, riskLevel: "high", email: "jake@contractor.co.nz", startDate: "Jan 2025", supervisor: "Lisa Johnson", employeeId: "C-002", isContractor: true },
+  ],
+  qsr: [
+    { id: "q1", name: "Alex Turner", role: "Shift Manager", site: "store-1", dept: "Management", status: "on-site", hoursThisWeek: "44h 00m", credentials: { valid: 5, expiring: 0, expired: 0 }, trainingPct: 100, riskLevel: "low", email: "alex@quickbites.co.nz", startDate: "Jun 2019", supervisor: "Rachel Kwon", employeeId: "W-101", isContractor: false },
+    { id: "q2", name: "Mia Chen", role: "Line Cook", site: "store-1", dept: "Kitchen", status: "on-site", hoursThisWeek: "38h 30m", credentials: { valid: 3, expiring: 1, expired: 0 }, trainingPct: 88, riskLevel: "medium", email: "mia@quickbites.co.nz", startDate: "Mar 2022", supervisor: "Alex Turner", employeeId: "W-102", isContractor: false },
+    { id: "q3", name: "Jordan Blake", role: "Crew Member", site: "store-2", dept: "Front of House", status: "on-site", hoursThisWeek: "28h 00m", credentials: { valid: 2, expiring: 0, expired: 0 }, trainingPct: 65, riskLevel: "low", email: "jordan@quickbites.co.nz", startDate: "Nov 2024", supervisor: "Sam Ortiz", employeeId: "W-103", isContractor: false },
+    { id: "q4", name: "Sam Ortiz", role: "Store Manager", site: "store-2", dept: "Management", status: "on-site", hoursThisWeek: "42h 15m", credentials: { valid: 6, expiring: 0, expired: 0 }, trainingPct: 100, riskLevel: "low", email: "sam@quickbites.co.nz", startDate: "Aug 2018", supervisor: "Rachel Kwon", employeeId: "W-104", isContractor: false },
+    { id: "q5", name: "Chloe Davis", role: "Delivery Driver", site: "store-1", dept: "Delivery", status: "off-site", hoursThisWeek: "32h 45m", credentials: { valid: 3, expiring: 0, expired: 1 }, trainingPct: 80, riskLevel: "medium", email: "chloe@quickbites.co.nz", startDate: "Feb 2023", supervisor: "Alex Turner", employeeId: "W-105", isContractor: false },
+    { id: "q6", name: "Noah Williams", role: "Kitchen Hand", site: "commissary", dept: "Kitchen", status: "on-site", hoursThisWeek: "36h 00m", credentials: { valid: 2, expiring: 0, expired: 0 }, trainingPct: 70, riskLevel: "low", email: "noah@quickbites.co.nz", startDate: "Jul 2024", supervisor: "Mia Chen", employeeId: "W-106", isContractor: false },
+    { id: "q7", name: "Ella Nguyen", role: "Trainer", site: "store-1", dept: "Training", status: "on-site", hoursThisWeek: "40h 00m", credentials: { valid: 8, expiring: 0, expired: 0 }, trainingPct: 100, riskLevel: "low", email: "ella@quickbites.co.nz", startDate: "May 2020", supervisor: "Rachel Kwon", employeeId: "W-107", isContractor: false },
+    { id: "q8", name: "Liam Cooper", role: "Prep Cook", site: "commissary", dept: "Kitchen", status: "leave", hoursThisWeek: "0h 00m", credentials: { valid: 3, expiring: 1, expired: 0 }, trainingPct: 75, riskLevel: "low", email: "liam@quickbites.co.nz", startDate: "Sep 2023", supervisor: "Mia Chen", employeeId: "W-108", isContractor: false },
+  ],
+  "transport-logistics": [
+    { id: "t1", name: "Ben Harper", role: "Fleet Driver", site: "depot-a", dept: "Fleet Operations", status: "on-site", hoursThisWeek: "45h 00m", credentials: { valid: 6, expiring: 1, expired: 0 }, trainingPct: 92, riskLevel: "high", email: "ben@swiftfreight.co.nz", startDate: "Apr 2019", supervisor: "Karen Lee", employeeId: "W-201", isContractor: false },
+    { id: "t2", name: "Karen Lee", role: "Dispatch Manager", site: "depot-a", dept: "Dispatch", status: "on-site", hoursThisWeek: "40h 00m", credentials: { valid: 5, expiring: 0, expired: 0 }, trainingPct: 100, riskLevel: "low", email: "karen@swiftfreight.co.nz", startDate: "Jan 2017", supervisor: "Greg Harmon", employeeId: "W-202", isContractor: false },
+    { id: "t3", name: "Ryan Scott", role: "Warehouse Associate", site: "depot-b", dept: "Warehousing", status: "on-site", hoursThisWeek: "37h 30m", credentials: { valid: 4, expiring: 0, expired: 0 }, trainingPct: 85, riskLevel: "low", email: "ryan@swiftfreight.co.nz", startDate: "Oct 2022", supervisor: "Tina Marsh", employeeId: "W-203", isContractor: false },
+    { id: "t4", name: "Tina Marsh", role: "Warehouse Supervisor", site: "depot-b", dept: "Warehousing", status: "on-site", hoursThisWeek: "41h 00m", credentials: { valid: 7, expiring: 0, expired: 0 }, trainingPct: 100, riskLevel: "low", email: "tina@swiftfreight.co.nz", startDate: "Mar 2018", supervisor: "Greg Harmon", employeeId: "W-204", isContractor: false },
+    { id: "t5", name: "Marco Silva", role: "Long-Haul Driver", site: "depot-a", dept: "Fleet Operations", status: "off-site", hoursThisWeek: "50h 30m", credentials: { valid: 5, expiring: 0, expired: 1 }, trainingPct: 78, riskLevel: "extreme", email: "marco@contractor.co.nz", startDate: "Nov 2024", supervisor: "Karen Lee", employeeId: "C-201", isContractor: true },
+    { id: "t6", name: "Sophie Tang", role: "Compliance Officer", site: "hq", dept: "Compliance", status: "on-site", hoursThisWeek: "39h 15m", credentials: { valid: 12, expiring: 0, expired: 0 }, trainingPct: 100, riskLevel: "low", email: "sophie@swiftfreight.co.nz", startDate: "Jul 2019", supervisor: "Greg Harmon", employeeId: "W-206", isContractor: false },
+    { id: "t7", name: "Jack O'Brien", role: "Fleet Mechanic", site: "depot-a", dept: "Fleet Operations", status: "on-site", hoursThisWeek: "38h 00m", credentials: { valid: 9, expiring: 1, expired: 0 }, trainingPct: 90, riskLevel: "medium", email: "jack@swiftfreight.co.nz", startDate: "Feb 2021", supervisor: "Karen Lee", employeeId: "W-207", isContractor: false },
+    { id: "t8", name: "Amy Brooks", role: "Customer Service Rep", site: "hq", dept: "Customer Service", status: "leave", hoursThisWeek: "0h 00m", credentials: { valid: 3, expiring: 0, expired: 0 }, trainingPct: 95, riskLevel: "low", email: "amy@swiftfreight.co.nz", startDate: "Jun 2023", supervisor: "Greg Harmon", employeeId: "W-208", isContractor: false },
+    { id: "t9", name: "Dan Fletcher", role: "Route Planner", site: "depot-a", dept: "Dispatch", status: "on-site", hoursThisWeek: "40h 00m", credentials: { valid: 4, expiring: 0, expired: 0 }, trainingPct: 88, riskLevel: "low", email: "dan@swiftfreight.co.nz", startDate: "Aug 2022", supervisor: "Karen Lee", employeeId: "W-209", isContractor: false },
+  ],
+};
+
+/* ═══ QUICK TASK OPTIONS (Bottom-Up Entry) ═══ */
+const QUICK_TASK_OPTIONS={
+  manufacturing:[
+    {id:"qt-mfg-1",title:"Morning Quality Audit",description:"Daily quality inspection across production lines",icon:"tasks",workflowId:"wf-quality-audit",appId:"quality-mgmt",goalIds:["mfg-defects","mfg-regulatory"]},
+    {id:"qt-mfg-2",title:"Pre-Shift Safety Walk",description:"Safety inspection and PPE compliance walkthrough",icon:"shield",workflowId:"wf-incident-report",appId:"safety-compliance",goalIds:["mfg-injuries","mfg-regulatory"]},
+    {id:"qt-mfg-3",title:"Shift Handover",description:"Structured shift transition and status documentation",icon:"people",workflowId:"wf-shift-handover",appId:"mfg-shift-mgmt",goalIds:["mfg-throughput","mfg-scheduling"]},
+  ],
+  qsr:[
+    {id:"qt-qsr-1",title:"Opening Checklist",description:"Store opening safety and readiness procedure",icon:"check",workflowId:"wf-opening-checklist",appId:"food-safety",goalIds:["qsr-food-safety","qsr-audit-scores"]},
+    {id:"qt-qsr-2",title:"Temperature Log",description:"Hourly temperature compliance recording",icon:"chart",workflowId:"wf-temp-log",appId:"food-safety",goalIds:["qsr-food-safety","qsr-food-quality"]},
+    {id:"qt-qsr-3",title:"Line Check & Positioning",description:"Station setup and crew positioning for daypart",icon:"people",workflowId:"wf-line-check",appId:"qsr-shift-mgmt",goalIds:["qsr-speed","qsr-accuracy"]},
+  ],
+  "transport-logistics":[
+    {id:"qt-tl-1",title:"Pre-Trip Vehicle Inspection",description:"DOT-compliant pre-trip safety checklist",icon:"shield",workflowId:"wf-pre-trip",appId:"fleet-ops",goalIds:["tl-vehicle-uptime","tl-driver-safety"]},
+    {id:"qt-tl-2",title:"Dock Receiving Check",description:"Inbound trailer processing and verification",icon:"tasks",workflowId:"wf-dock-receiving",appId:"dock-ops",goalIds:["tl-dock-throughput","tl-accuracy-damage"]},
+    {id:"qt-tl-3",title:"Proof of Delivery Capture",description:"Electronic proof of delivery workflow",icon:"check",workflowId:"wf-pod-capture",appId:"delivery-tracking",goalIds:["tl-otd","tl-visibility"]},
+  ],
+};
+
+function getWorkerStats(workers) {
+  return {
+    total: workers.length,
+    onSite: workers.filter(w => w.status === "on-site").length,
+    expiringCreds: workers.reduce((s, w) => s + w.credentials.expiring, 0),
+    trainingOverdue: workers.filter(w => w.trainingPct < 80).length,
+    contractors: workers.filter(w => w.isContractor).length,
+  };
+}
+
 /* ═══ CONNECTOR CATALOG ═══ */
 const CONNECTOR_CATALOG=[
   {id:"ai_models",label:"AI Models",color:T.violet,connectors:[
@@ -8947,6 +9102,556 @@ function BrandIcon({brandLogoUrl,size=28}){
   return<RCLogo size={size}/>;
 }
 
+/* ═══ WORKFLOW RUNNER ═══ */
+function WorkflowRunner({workflow,onUpdateAnswer,onNext,onPrev,onComplete,onCancel}){
+  const{task,templateName,steps,answers}=workflow;
+  const app=APP_CATALOG.find(a=>a.id===task.appId);
+
+  /* Count answered */
+  const answered=steps.filter(s=>{
+    const v=answers[s.id];
+    if(s.type==="check")return!!v;
+    if(s.type==="passfail")return v==="pass"||v==="fail";
+    if(s.type==="number")return v!==undefined&&v!=="";
+    if(s.type==="select")return!!v;
+    if(s.type==="text")return(v||"").length>0;
+    if(s.type==="sign")return!!v;
+    if(s.type==="photo")return!!v;
+    return false;
+  }).length;
+  const pct=Math.round((answered/steps.length)*100);
+
+  /* All required answered? */
+  const allRequiredDone=steps.every(s=>{
+    if(!s.required)return true;
+    const v=answers[s.id];
+    if(s.type==="check")return!!v;
+    if(s.type==="passfail")return v==="pass"||v==="fail";
+    if(s.type==="number")return v!==undefined&&v!=="";
+    if(s.type==="select")return!!v;
+    if(s.type==="sign")return!!v;
+    return true;
+  });
+
+  const inputStyle={width:"100%",padding:"10px 14px",borderRadius:T.rSm,border:`1px solid ${T.border}`,background:T.bg,color:T.text,fontSize:14,fontFamily:T.sans,outline:"none",transition:"border-color 0.15s"};
+  const typeLabel=(t)=>t==="check"?"Checklist":t==="passfail"?"Pass / Fail":t==="number"?"Measurement":t==="select"?"Selection":t==="text"?"Notes":t==="sign"?"Sign-off":"Input";
+
+  return<div style={{position:"fixed",inset:0,zIndex:100,background:T.bg,display:"flex",flexDirection:"column",animation:"tpSlideIn 0.25s ease"}}>
+
+    {/* ── Sticky Header ── */}
+    <div style={{padding:"14px 20px",borderBottom:`1px solid ${T.border}`,display:"flex",alignItems:"center",gap:12,background:T.surface,flexShrink:0}}>
+      <div onClick={onCancel} style={{width:34,height:34,borderRadius:9,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",border:`1px solid ${T.border}`,background:T.surfaceMuted,transition:"all 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor=T.accentBorder} onMouseLeave={e=>e.currentTarget.style.borderColor=T.border}>
+        {IC.x(T.textSecondary,14)}
+      </div>
+      <div style={{flex:1,minWidth:0}}>
+        <div style={{fontSize:14,fontWeight:600,letterSpacing:"-0.01em",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{templateName||task.title}</div>
+        <div style={{fontSize:11,color:T.textTertiary,display:"flex",alignItems:"center",gap:6,marginTop:1}}>
+          {app&&<><span style={{width:6,height:6,borderRadius:"50%",background:app.color||T.accent,display:"inline-block"}}/><span>{app.name}</span><span style={{color:T.borderSubtle}}>{"\u00b7"}</span></>}
+          <span>{answered} of {steps.length} completed</span>
+        </div>
+      </div>
+      <div style={{fontSize:13,fontWeight:600,fontFamily:T.mono,color:T.accent}}>{pct}%</div>
+    </div>
+
+    {/* ── Progress bar ── */}
+    <div style={{height:3,background:T.borderSubtle,flexShrink:0}}>
+      <div style={{height:"100%",background:T.accent,borderRadius:"0 2px 2px 0",transition:"width 0.3s ease",width:`${pct}%`}}/>
+    </div>
+
+    {/* ── All Steps (scrollable) ── */}
+    <div style={{flex:1,overflowY:"auto",padding:"24px 20px 100px",WebkitOverflowScrolling:"touch"}}>
+      <div style={{maxWidth:520,margin:"0 auto",display:"flex",flexDirection:"column",gap:0}}>
+        {steps.map((step,idx)=>{
+          const v=answers[step.id];
+          const isDone=(step.type==="check"&&!!v)||(step.type==="passfail"&&(v==="pass"||v==="fail"))||(step.type==="number"&&v!==undefined&&v!=="")||(step.type==="select"&&!!v)||(step.type==="sign"&&!!v)||(step.type==="photo"&&!!v)||(step.type==="text"&&(v||"").length>0);
+
+          return<div key={step.id} style={{paddingBottom:28,marginBottom:28,borderBottom:idx<steps.length-1?`1px solid ${T.borderSubtle}`:"none"}}>
+            {/* Step header row */}
+            <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:14}}>
+              <div style={{width:28,height:28,borderRadius:"50%",background:isDone?T.green:T.accentSoft,color:isDone?"#fff":T.accent,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,fontFamily:T.mono,transition:"all 0.2s",flexShrink:0}}>
+                {isDone?IC.check("#fff",12):idx+1}
+              </div>
+              <div style={{fontSize:10,textTransform:"uppercase",letterSpacing:"0.06em",fontFamily:T.mono,color:T.textTertiary}}>{typeLabel(step.type)}</div>
+              {step.required&&<span className="chip" style={{background:T.roseSoft,color:T.rose,fontSize:8,padding:"1px 6px"}}>Required</span>}
+            </div>
+
+            {/* Label */}
+            <div style={{fontSize:16,fontWeight:500,fontFamily:T.serif,letterSpacing:"-0.02em",lineHeight:1.4,marginBottom:16,color:T.text}}>{step.label}</div>
+
+            {/* ── Field by type ── */}
+
+            {step.type==="check"&&<div onClick={()=>onUpdateAnswer(step.id,!v)} style={{display:"flex",alignItems:"center",gap:14,padding:"14px 18px",borderRadius:T.r,border:`1px solid ${v?T.greenBorder:T.border}`,background:v?T.greenSoft:T.surface,cursor:"pointer",transition:"all 0.2s"}}>
+              <div style={{width:22,height:22,borderRadius:6,border:`2px solid ${v?T.green:T.border}`,background:v?T.green:"transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"all 0.15s",flexShrink:0}}>
+                {v&&IC.check("#fff",12)}
+              </div>
+              <span style={{fontSize:13,fontWeight:500,color:v?T.green:T.text}}>{v?"Confirmed":"Tap to confirm"}</span>
+            </div>}
+
+            {step.type==="passfail"&&<div style={{display:"flex",gap:10}}>
+              {[{val:"pass",label:"Pass",color:T.green,soft:T.greenSoft,border:T.greenBorder,icon:IC.check},{val:"fail",label:"Fail",color:T.rose,soft:T.roseSoft,border:T.roseBorder,icon:IC.x}].map(opt=>{
+                const active=v===opt.val;
+                return<div key={opt.val} onClick={()=>onUpdateAnswer(step.id,opt.val)} style={{flex:1,padding:"16px 14px",borderRadius:T.r,border:`2px solid ${active?opt.border:T.border}`,background:active?opt.soft:T.surface,cursor:"pointer",textAlign:"center",transition:"all 0.2s"}}>
+                  <div style={{marginBottom:6}}>{opt.icon(active?opt.color:T.textTertiary,24)}</div>
+                  <div style={{fontSize:13,fontWeight:600,color:active?opt.color:T.textSecondary}}>{opt.label}</div>
+                </div>;
+              })}
+            </div>}
+
+            {step.type==="number"&&<div>
+              <div style={{position:"relative"}}>
+                <input type="number" value={v||""} onChange={e=>onUpdateAnswer(step.id,e.target.value)} placeholder={step.placeholder||"Enter value"} style={{...inputStyle,fontSize:20,fontFamily:T.mono,fontWeight:600,padding:"14px 56px 14px 18px"}} onFocus={e=>e.target.style.borderColor=T.accent} onBlur={e=>e.target.style.borderColor=T.border}/>
+                {step.unit&&<span style={{position:"absolute",right:18,top:"50%",transform:"translateY(-50%)",fontSize:13,color:T.textTertiary,fontFamily:T.mono}}>{step.unit}</span>}
+              </div>
+              {step.min!==undefined&&<div style={{marginTop:6,fontSize:11,color:T.textTertiary,fontFamily:T.mono}}>Range: {step.min} – {step.max} {step.unit||""}</div>}
+            </div>}
+
+            {step.type==="select"&&<div style={{display:"flex",flexDirection:"column",gap:6}}>
+              {(step.options||[]).map(opt=>{
+                const active=v===opt;
+                return<div key={opt} onClick={()=>onUpdateAnswer(step.id,opt)} style={{padding:"12px 16px",borderRadius:T.r,border:`2px solid ${active?T.accentBorder:T.border}`,background:active?T.accentSoft:T.surface,cursor:"pointer",fontSize:13,fontWeight:active?600:400,color:active?T.accent:T.text,transition:"all 0.15s",display:"flex",alignItems:"center",gap:10}}>
+                  <div style={{width:16,height:16,borderRadius:"50%",border:`2px solid ${active?T.accent:T.border}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                    {active&&<div style={{width:8,height:8,borderRadius:"50%",background:T.accent}}/>}
+                  </div>
+                  {opt}
+                </div>;
+              })}
+            </div>}
+
+            {step.type==="text"&&<textarea value={v||""} onChange={e=>onUpdateAnswer(step.id,e.target.value)} placeholder={step.placeholder||"Add notes..."} rows={3} style={{...inputStyle,resize:"vertical",lineHeight:1.6}} onFocus={e=>e.target.style.borderColor=T.accent} onBlur={e=>e.target.style.borderColor=T.border}/>}
+
+            {step.type==="sign"&&<div>
+              {!v
+                ?<div onClick={()=>onUpdateAnswer(step.id,"signed-"+Date.now())} style={{padding:"20px 18px",borderRadius:T.r,border:`2px dashed ${T.border}`,background:T.surfaceMuted,cursor:"pointer",textAlign:"center",transition:"all 0.2s"}} onMouseEnter={e=>{e.currentTarget.style.borderColor=T.accent;e.currentTarget.style.background=T.accentSoft;}} onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.background=T.surfaceMuted;}}>
+                  <div style={{fontSize:13,color:T.textSecondary,fontWeight:500}}>Tap to sign off</div>
+                </div>
+                :<div style={{padding:"16px",borderRadius:T.r,border:`2px solid ${T.greenBorder}`,background:T.greenSoft,textAlign:"center"}}>
+                  <div style={{fontSize:13,fontWeight:600,color:T.green}}>{IC.check(T.green,14)} Signed</div>
+                </div>
+              }
+            </div>}
+
+            {step.type==="photo"&&<div onClick={()=>onUpdateAnswer(step.id,v?"":"photo-"+Date.now())} style={{padding:"24px 18px",borderRadius:T.r,border:`2px dashed ${v?T.greenBorder:T.border}`,background:v?T.greenSoft:T.surfaceMuted,cursor:"pointer",textAlign:"center",transition:"all 0.2s"}}>
+              <div style={{fontSize:13,color:v?T.green:T.textSecondary,fontWeight:500}}>{v?"Photo captured":"Tap to take photo"}</div>
+            </div>}
+
+          </div>;
+        })}
+      </div>
+    </div>
+
+    {/* ── Sticky Footer ── */}
+    <div style={{padding:"14px 20px",borderTop:`1px solid ${T.border}`,background:T.surface,display:"flex",alignItems:"center",gap:12,flexShrink:0}}>
+      <div onClick={onCancel} style={{padding:"10px 20px",borderRadius:99,background:T.surfaceMuted,border:`1px solid ${T.border}`,fontSize:13,color:T.textSecondary,cursor:"pointer",fontWeight:500}}>Cancel</div>
+      <div style={{flex:1}}/>
+      <div onClick={allRequiredDone?onComplete:undefined} style={{padding:"10px 24px",borderRadius:99,background:allRequiredDone?T.green:T.surfaceMuted,color:allRequiredDone?"#fff":T.textTertiary,fontSize:13,fontWeight:600,cursor:allRequiredDone?"pointer":"default",display:"flex",alignItems:"center",gap:6,transition:"all 0.15s"}}>
+        {IC.check(allRequiredDone?"#fff":T.textTertiary,13)} Complete
+      </div>
+    </div>
+  </div>;
+}
+
+/* ═══ FLW VIEW — Frontline Worker Daily Experience ═══ */
+
+function FLWApp({industry,onExit}){
+  const[tab,setTab]=useState("today");
+  const[fullWidth,setFullWidth]=useState(false);
+  const[profileOpen,setProfileOpen]=useState(false);
+  const[activeWorkflow,setActiveWorkflow]=useState(null);
+  const[fabOpen,setFabOpen]=useState(false);
+  const ind=INDUSTRIES.find(i=>i.id===industry)||INDUSTRIES[0];
+  const workers=(WORKERS_BY_INDUSTRY[industry]||WORKERS_BY_INDUSTRY.manufacturing);
+  /* Pick a "current user" — second worker (first non-supervisor feel) */
+  const me=workers[1]||workers[0];
+
+  const phoneW=390,phoneH=844;
+
+  const content=<div style={{display:"flex",flexDirection:"column",height:"100%",background:T.bg,fontFamily:T.sans,color:T.text,position:"relative"}}>
+    {/* FLW Status Bar (decorative) */}
+    <div style={{padding:"6px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:11,fontWeight:600,color:T.textSecondary,flexShrink:0}}>
+      <span>9:41</span>
+      <div style={{display:"flex",gap:4,alignItems:"center"}}>
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><rect x="0" y="4" width="3" height="6" rx="0.5" fill={T.textSecondary}/><rect x="4" y="2.5" width="3" height="7.5" rx="0.5" fill={T.textSecondary}/><rect x="8" y="0" width="3" height="10" rx="0.5" fill={T.textSecondary}/></svg>
+        <svg width="20" height="10" viewBox="0 0 20 10" fill="none"><rect x="0.5" y="0.5" width="17" height="9" rx="2" stroke={T.textSecondary} strokeWidth="1"/><rect x="18" y="3" width="2" height="4" rx="0.5" fill={T.textSecondary}/><rect x="2" y="2" width="12" height="6" rx="1" fill={T.green}/></svg>
+      </div>
+    </div>
+
+    {/* FLW Top Bar */}
+    <div style={{padding:"8px 16px 12px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
+      <div>
+        <div style={{fontSize:18,fontWeight:600,fontFamily:T.serif,letterSpacing:"-0.03em"}}>Morning, {me.name.split(" ")[0]}</div>
+        <div style={{fontSize:12,color:T.textTertiary,marginTop:1}}>{ind.label} · {me.role}</div>
+      </div>
+      <div onClick={()=>setProfileOpen(!profileOpen)} style={{width:36,height:36,borderRadius:"50%",background:ind.colorSoft,border:`2px solid ${ind.color}30`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:700,color:ind.color,cursor:"pointer"}}>
+        {me.name.split(" ").map(n=>n[0]).join("")}
+      </div>
+    </div>
+
+    {/* Profile card (slide-down) */}
+    {profileOpen&&<FLWProfile me={me} ind={ind} industry={industry} onClose={()=>setProfileOpen(false)} onExit={onExit}/>}
+
+    {/* Tab content */}
+    <div style={{flex:1,overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
+      {tab==="today"&&<FLWToday industry={industry} ind={ind} onOpenWorkflow={setActiveWorkflow}/>}
+      {tab==="cowork"&&<FLWCowork industry={industry} ind={ind} me={me}/>}
+      {tab==="directory"&&<FLWDirectory industry={industry} ind={ind} me={me}/>}
+    </div>
+
+    {/* FAB + Action Sheet */}
+    {!activeWorkflow&&<>
+      {/* FAB button */}
+      <div onClick={()=>setFabOpen(!fabOpen)} style={{
+        position:"absolute",bottom:68,right:16,zIndex:60,width:52,height:52,borderRadius:"50%",
+        background:ind.color,display:"flex",alignItems:"center",justifyContent:"center",
+        cursor:"pointer",boxShadow:`0 4px 16px ${ind.color}40`,transition:"all 0.2s",
+        transform:fabOpen?"rotate(45deg)":"rotate(0deg)",
+      }}>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      </div>
+
+      {/* Action sheet overlay */}
+      {fabOpen&&<>
+        <div onClick={()=>setFabOpen(false)} style={{position:"absolute",inset:0,zIndex:55,background:"rgba(0,0,0,0.25)"}}/>
+        <div style={{position:"absolute",bottom:0,left:0,right:0,zIndex:58,background:T.surface,borderRadius:"20px 20px 0 0",padding:"20px 16px 24px",boxShadow:"0 -8px 32px rgba(0,0,0,0.12)",animation:"fadeIn 0.2s ease"}}>
+          <div style={{width:36,height:4,borderRadius:2,background:T.borderSubtle,margin:"0 auto 16px"}}/>
+          <div style={{fontSize:10,fontFamily:T.mono,textTransform:"uppercase",letterSpacing:"0.06em",color:T.textTertiary,marginBottom:12}}>Quick actions</div>
+          <div style={{display:"flex",flexDirection:"column",gap:8}}>
+            {[
+              {id:"inspection",label:"Start Inspection",desc:industry==="manufacturing"?"Quality inspection checklist":industry==="qsr"?"Opening checklist":"Pre-trip vehicle inspection",icon:IC.shield,wfId:industry==="manufacturing"?"wf-quality-audit":industry==="qsr"?"wf-opening-checklist":"wf-pre-trip",appId:industry==="manufacturing"?"quality-mgmt":industry==="qsr"?"food-safety":"fleet-ops"},
+              {id:"observation",label:"Raise Observation",desc:"Flag something you've noticed — safety, quality, or positive",icon:IC.target,wfId:"wf-observation",appId:"observations"},
+              {id:"issue",label:"Log Issue",desc:"Report an incident, defect, or equipment failure",icon:IC.bolt,wfId:"wf-issue-report",appId:"issue-reporting"},
+            ].map(a=><div key={a.id} onClick={()=>{
+              setFabOpen(false);
+              const tmpl=WORKFLOW_STEP_TEMPLATES[a.wfId]||WORKFLOW_STEP_TEMPLATES["_default"];
+              setActiveWorkflow({task:{id:a.id,title:a.label,appId:a.appId,workflowId:a.wfId},templateName:tmpl.name,steps:tmpl.steps.map(s=>({...s})),stepIndex:0,answers:{}});
+            }} style={{
+              display:"flex",alignItems:"center",gap:14,padding:"14px 16px",borderRadius:14,
+              background:T.surfaceHover,border:`1.5px solid ${T.border}`,cursor:"pointer",transition:"all 0.15s",
+            }} onMouseEnter={e=>{e.currentTarget.style.borderColor=ind.color+"40";e.currentTarget.style.boxShadow=`0 2px 12px ${ind.color}10`;}} onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.boxShadow="none";}}>
+              <div style={{width:40,height:40,borderRadius:11,background:`${ind.color}12`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                {a.icon(ind.color,18)}
+              </div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:14,fontWeight:600,letterSpacing:"-0.01em",marginBottom:2}}>{a.label}</div>
+                <div style={{fontSize:12,color:T.textTertiary,lineHeight:1.4}}>{a.desc}</div>
+              </div>
+              {IC.chevRight(T.textTertiary,14)}
+            </div>)}
+          </div>
+        </div>
+      </>}
+    </>}
+
+    {/* Bottom tab bar */}
+    <div style={{display:"flex",borderTop:`1px solid ${T.borderSubtle}`,background:T.surface,flexShrink:0,paddingBottom:"env(safe-area-inset-bottom, 0px)"}}>
+      {[
+        {id:"today",label:"Today",icon:IC.tasks},
+        {id:"cowork",label:"Cowork",icon:IC.sparkle},
+        {id:"directory",label:"Directory",icon:IC.people},
+      ].map(t=>{
+        const active=tab===t.id;
+        return<div key={t.id} onClick={()=>setTab(t.id)} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:3,padding:"10px 0 8px",cursor:"pointer",transition:"color 0.15s",color:active?ind.color:T.textTertiary}}>
+          {t.icon(active?ind.color:T.textTertiary,18)}
+          <span style={{fontSize:10,fontWeight:active?700:500,letterSpacing:"-0.01em"}}>{t.label}</span>
+        </div>;
+      })}
+    </div>
+
+    {/* Workflow runner overlay */}
+    {activeWorkflow&&<div style={{position:"absolute",inset:0,zIndex:100,background:T.bg}}>
+      <WorkflowRunner workflow={activeWorkflow}
+        onUpdateAnswer={(stepId,value)=>setActiveWorkflow(prev=>({...prev,answers:{...prev.answers,[stepId]:value}}))}
+        onNext={()=>setActiveWorkflow(prev=>({...prev,stepIndex:Math.min(prev.stepIndex+1,prev.steps.length-1)}))}
+        onPrev={()=>setActiveWorkflow(prev=>({...prev,stepIndex:Math.max(prev.stepIndex-1,0)}))}
+        onComplete={()=>setActiveWorkflow(null)}
+        onCancel={()=>setActiveWorkflow(null)}
+      />
+    </div>}
+  </div>;
+
+  /* Phone frame wrapper */
+  if(fullWidth) return<div style={{minHeight:"100vh"}}>
+    <div style={{position:"fixed",top:12,right:12,zIndex:200,display:"flex",gap:8}}>
+      <div onClick={()=>setFullWidth(false)} style={{padding:"6px 14px",borderRadius:99,background:T.surface,border:`1px solid ${T.border}`,fontSize:11,fontWeight:600,color:T.textSecondary,cursor:"pointer",boxShadow:"0 2px 8px rgba(0,0,0,0.08)"}}>Phone view</div>
+    </div>
+    {content}
+  </div>;
+
+  return<div style={{minHeight:"100vh",background:"#111",display:"flex",alignItems:"center",justifyContent:"center",position:"relative"}}>
+    {/* Frame toggles */}
+    <div style={{position:"fixed",top:16,right:16,zIndex:200,display:"flex",gap:8}}>
+      <div onClick={()=>setFullWidth(true)} style={{padding:"6px 14px",borderRadius:99,background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.15)",fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.7)",cursor:"pointer",backdropFilter:"blur(8px)"}}>Full width</div>
+      <div onClick={onExit} style={{padding:"6px 14px",borderRadius:99,background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.15)",fontSize:11,fontWeight:600,color:"rgba(255,255,255,0.7)",cursor:"pointer",backdropFilter:"blur(8px)"}}>Back to workspace</div>
+    </div>
+    {/* Phone bezel */}
+    <div style={{width:phoneW,height:phoneH,borderRadius:44,background:T.bg,overflow:"hidden",boxShadow:"0 0 0 8px #222, 0 24px 80px rgba(0,0,0,0.5)",position:"relative"}}>
+      {content}
+    </div>
+  </div>;
+}
+
+/* ── FLW Today Tab ── */
+function FLWToday({industry,ind,onOpenWorkflow}){
+  const allTasks=(HOME_TASKS[industry]||HOME_TASKS.manufacturing);
+  const[doneTasks,setDoneTasks]=useState(()=>new Set(allTasks.filter(t=>t.done).map((_,i)=>i)));
+  const openTasks=allTasks.map((t,i)=>({...t,idx:i})).filter(t=>!doneTasks.has(t.idx));
+  const completedTasks=allTasks.map((t,i)=>({...t,idx:i})).filter(t=>doneTasks.has(t.idx));
+  const quickTasks=(QUICK_TASK_OPTIONS[industry]||[]);
+
+  const handleTaskTap=(task)=>{
+    const qt=quickTasks.find(q=>q.title.toLowerCase().includes(task.text.split(" ")[0].toLowerCase()));
+    if(qt){
+      const tmpl=WORKFLOW_STEP_TEMPLATES[qt.workflowId]||WORKFLOW_STEP_TEMPLATES["_default"];
+      onOpenWorkflow({task:{id:qt.id,title:qt.title,appId:qt.appId,workflowId:qt.workflowId},templateName:tmpl.name,steps:tmpl.steps.map(s=>({...s})),stepIndex:0,answers:{}});
+    } else {
+      setDoneTasks(prev=>{const next=new Set(prev);next.add(task.idx);return next;});
+    }
+  };
+
+  return<div style={{padding:"0 16px 24px"}}>
+    {/* Status strip */}
+    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:20,padding:"10px 14px",borderRadius:12,background:T.surface,border:`1px solid ${T.borderSubtle}`}}>
+      <div style={{flex:1}}>
+        <div style={{fontSize:22,fontWeight:300,fontFamily:T.serif,letterSpacing:"-0.03em",color:ind.color}}>{openTasks.length}</div>
+        <div style={{fontSize:11,color:T.textTertiary}}>tasks remaining</div>
+      </div>
+      <div style={{width:1,height:28,background:T.borderSubtle}}/>
+      <div style={{flex:1,textAlign:"center"}}>
+        <div style={{fontSize:22,fontWeight:300,fontFamily:T.serif,letterSpacing:"-0.03em"}}>{completedTasks.length}</div>
+        <div style={{fontSize:11,color:T.textTertiary}}>completed</div>
+      </div>
+      <div style={{width:1,height:28,background:T.borderSubtle}}/>
+      <div style={{flex:1,textAlign:"right"}}>
+        <div style={{width:8,height:8,borderRadius:"50%",background:T.green,display:"inline-block",marginRight:4,verticalAlign:"middle"}}/>
+        <span style={{fontSize:11,color:T.textTertiary}}>On track</span>
+      </div>
+    </div>
+
+    {/* Open tasks */}
+    {openTasks.length>0&&<>
+      <div style={{fontSize:10,fontFamily:T.mono,textTransform:"uppercase",letterSpacing:"0.06em",color:T.textTertiary,marginBottom:8}}>Up next</div>
+      <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:24}}>
+        {openTasks.map((t,i)=><div key={t.idx} onClick={()=>handleTaskTap(t)} style={{
+          background:T.surface,border:`1.5px solid ${i===0?ind.color+"40":T.border}`,borderRadius:14,
+          padding:"14px 16px",cursor:"pointer",transition:"all 0.15s",
+          boxShadow:i===0?`0 2px 12px ${ind.color}12`:"0 1px 3px rgba(0,0,0,0.03)",
+        }}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <div style={{width:22,height:22,borderRadius:7,border:`2px solid ${i===0?ind.color:T.border}`,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+              {i===0&&<div style={{width:8,height:8,borderRadius:3,background:ind.color}}/>}
+            </div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:13.5,fontWeight:i===0?600:500,letterSpacing:"-0.01em",lineHeight:1.3}}>{t.text}</div>
+              {t.ai&&t.aiNote&&<div style={{fontSize:11,color:T.violet,marginTop:3,lineHeight:1.4}}>{t.aiNote}</div>}
+            </div>
+            <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
+              {t.ai&&<span style={{padding:"2px 7px",borderRadius:5,background:T.violetSoft,color:T.violet,fontSize:9,fontWeight:700,fontFamily:T.mono,border:`1px solid ${T.violetBorder}`}}>AI</span>}
+              {t.tag&&<span style={{padding:"2px 7px",borderRadius:5,background:T.surfaceMuted,color:T.textTertiary,fontSize:9,fontWeight:500}}>{t.tag}</span>}
+              {IC.chevRight(T.textTertiary,14)}
+            </div>
+          </div>
+        </div>)}
+      </div>
+    </>}
+
+    {/* Completed */}
+    {completedTasks.length>0&&<>
+      <div style={{fontSize:10,fontFamily:T.mono,textTransform:"uppercase",letterSpacing:"0.06em",color:T.textTertiary,marginBottom:8}}>Completed</div>
+      <div style={{display:"flex",flexDirection:"column",gap:6}}>
+        {completedTasks.map(t=><div key={t.idx} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",borderRadius:10,background:T.surfaceHover}}>
+          <div style={{width:20,height:20,borderRadius:6,background:T.green,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{IC.check("#fff",10)}</div>
+          <span style={{fontSize:12.5,color:T.textTertiary,textDecoration:"line-through",flex:1}}>{t.text}</span>
+        </div>)}
+      </div>
+    </>}
+
+    {/* Nudge */}
+    {openTasks.length>0&&<div style={{marginTop:20,padding:"12px 16px",borderRadius:12,background:`${ind.color}08`,border:`1px solid ${ind.color}15`,display:"flex",alignItems:"center",gap:10}}>
+      {IC.sparkle(ind.color,14)}
+      <span style={{fontSize:12,color:ind.color,fontWeight:500}}>Next up: {openTasks[0].text}</span>
+    </div>}
+  </div>;
+}
+
+/* ── FLW Cowork Tab (AI Assistant) ── */
+function FLWCowork({industry,ind,me}){
+  const[messages,setMessages]=useState([]);
+  const[chipUsed,setChipUsed]=useState(new Set());
+  const tasks=(HOME_TASKS[industry]||HOME_TASKS.manufacturing).filter(t=>!t.done);
+  const nextTask=tasks[0];
+
+  const chips=[
+    {id:"flagged",label:"What's flagged today?"},
+    {id:"help",label:"Help with this task"},
+    {id:"issue",label:"Log an issue"},
+    {id:"safety",label:"Safety concern"},
+  ];
+
+  const responses={
+    flagged:nextTask&&nextTask.ai
+      ?`There's **1 flag** today: ${nextTask.aiNote||nextTask.text}. I'd suggest tackling this first — it's your top priority.`
+      :`No flags right now — you're clear. Your next task is **${nextTask?nextTask.text:"all done for today"}**.`,
+    help:nextTask
+      ?`For **${nextTask.text}**: I can walk you through it step by step. This usually takes about 10 minutes. Ready to start?`
+      :"You've completed all your tasks — nice work! Let me know if something else comes up.",
+    issue:"Got it — I'll log that for you. Can you describe what happened? I'll route it to your supervisor and create a follow-up action.",
+    safety:"**Safety reports are always prioritised.** Describe what you've observed and I'll escalate immediately. If anyone is in danger, call emergency services first.",
+  };
+
+  const handleChip=(chip)=>{
+    if(chipUsed.has(chip.id))return;
+    setChipUsed(prev=>new Set([...prev,chip.id]));
+    setMessages(prev=>[...prev,{role:"user",text:chip.label},{role:"ai",text:responses[chip.id]||"Let me look into that for you."}]);
+  };
+
+  return<div style={{padding:"0 16px 24px",display:"flex",flexDirection:"column",height:"100%"}}>
+    {/* AI greeting */}
+    <div style={{display:"flex",gap:10,marginBottom:16,marginTop:4}}>
+      <div style={{width:32,height:32,borderRadius:"50%",background:T.accentSoft,border:`1.5px solid ${T.accentBorder}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+        {IC.sparkle(T.accent,14)}
+      </div>
+      <div style={{background:T.surface,border:`1.5px solid ${T.border}`,borderRadius:"4px 14px 14px 14px",padding:"12px 16px",maxWidth:"85%"}}>
+        <div style={{fontSize:13.5,lineHeight:1.6,color:T.text}}>Hey {me.name.split(" ")[0]}! You've got <strong>{tasks.length} tasks</strong> on your list today.{nextTask&&nextTask.ai?` Heads up — ${nextTask.aiNote}.`:""} How can I help?</div>
+      </div>
+    </div>
+
+    {/* Message history */}
+    <div style={{flex:1,display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
+      {messages.map((m,i)=>m.role==="user"
+        ?<div key={i} style={{alignSelf:"flex-end",padding:"10px 16px",borderRadius:"14px 14px 4px 14px",background:ind.color,color:"#fff",fontSize:13,maxWidth:"80%",lineHeight:1.5}}>{m.text}</div>
+        :<div key={i} style={{display:"flex",gap:10}}>
+          <div style={{width:32,height:32,borderRadius:"50%",background:T.accentSoft,border:`1.5px solid ${T.accentBorder}`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            {IC.sparkle(T.accent,14)}
+          </div>
+          <div style={{background:T.surface,border:`1.5px solid ${T.border}`,borderRadius:"4px 14px 14px 14px",padding:"12px 16px",maxWidth:"80%"}}>
+            <div style={{fontSize:13,lineHeight:1.6,color:T.text}} dangerouslySetInnerHTML={{__html:m.text.replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>")}}/>
+          </div>
+        </div>
+      )}
+    </div>
+
+    {/* Quick action chips */}
+    <div style={{display:"flex",flexWrap:"wrap",gap:8,paddingBottom:8}}>
+      {chips.filter(c=>!chipUsed.has(c.id)).map(c=><div key={c.id} onClick={()=>handleChip(c)} style={{
+        padding:"9px 16px",borderRadius:99,fontSize:12.5,fontWeight:500,
+        background:T.surface,border:`1.5px solid ${T.border}`,color:T.textSecondary,
+        cursor:"pointer",transition:"all 0.15s",
+      }} onMouseEnter={e=>{e.currentTarget.style.borderColor=ind.color;e.currentTarget.style.color=ind.color;}} onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.color=T.textSecondary;}}>
+        {c.label}
+      </div>)}
+    </div>
+
+    {/* Input (decorative) */}
+    <div style={{display:"flex",alignItems:"center",padding:"8px 12px",borderRadius:14,background:T.surfaceMuted,border:`1.5px solid ${T.border}`,gap:8}}>
+      <span style={{flex:1,fontSize:13,color:T.textTertiary}}>Ask me anything...</span>
+      <div style={{width:30,height:30,borderRadius:8,background:T.accent,display:"flex",alignItems:"center",justifyContent:"center",opacity:0.4}}>
+        {IC.send("#fff",14)}
+      </div>
+    </div>
+  </div>;
+}
+
+/* ── FLW Directory Tab ── */
+function FLWDirectory({industry,ind,me}){
+  const workers=(WORKERS_BY_INDUSTRY[industry]||WORKERS_BY_INDUSTRY.manufacturing);
+  const others=workers.filter(w=>w.id!==me.id);
+  const onShift=others.filter(w=>w.status==="on-site");
+  const supervisor=others.find(w=>w.role.toLowerCase().includes("manager")||w.role.toLowerCase().includes("supervisor")||w.role.toLowerCase().includes("director"));
+  const offShift=others.filter(w=>w.status!=="on-site"&&w!==supervisor);
+
+  const PersonCard=({w,highlight})=><div style={{
+    display:"flex",alignItems:"center",gap:12,padding:"12px 14px",borderRadius:12,
+    background:T.surface,border:`1.5px solid ${highlight?ind.color+"30":T.border}`,
+    marginBottom:8,cursor:"pointer",transition:"all 0.15s",
+  }} onMouseEnter={e=>{e.currentTarget.style.borderColor=ind.color+"50";}} onMouseLeave={e=>{e.currentTarget.style.borderColor=highlight?ind.color+"30":T.border;}}>
+    <div style={{width:38,height:38,borderRadius:"50%",background:T.surfaceMuted,display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700,color:T.textSecondary,flexShrink:0,position:"relative"}}>
+      {w.name.split(" ").map(n=>n[0]).join("")}
+      <div style={{position:"absolute",bottom:-1,right:-1,width:10,height:10,borderRadius:"50%",background:w.status==="on-site"?T.green:T.textTertiary,border:`2px solid ${T.surface}`}}/>
+    </div>
+    <div style={{flex:1,minWidth:0}}>
+      <div style={{fontSize:13.5,fontWeight:500,letterSpacing:"-0.01em"}}>{w.name}</div>
+      <div style={{fontSize:11.5,color:T.textTertiary,marginTop:1}}>{w.role}{w.site?" · "+w.site:""}</div>
+    </div>
+    <div style={{display:"flex",gap:6,flexShrink:0}}>
+      <div style={{width:30,height:30,borderRadius:8,background:T.surfaceMuted,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.textTertiary} strokeWidth="2" strokeLinecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div style={{width:30,height:30,borderRadius:8,background:T.surfaceMuted,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer"}}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.textTertiary} strokeWidth="2" strokeLinecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+    </div>
+  </div>;
+
+  return<div style={{padding:"0 16px 24px"}}>
+    {/* Supervisor */}
+    {supervisor&&<>
+      <div style={{fontSize:10,fontFamily:T.mono,textTransform:"uppercase",letterSpacing:"0.06em",color:T.textTertiary,marginBottom:8}}>Your supervisor</div>
+      <PersonCard w={supervisor} highlight/>
+      <div style={{height:12}}/>
+    </>}
+
+    {/* On shift */}
+    <div style={{fontSize:10,fontFamily:T.mono,textTransform:"uppercase",letterSpacing:"0.06em",color:T.textTertiary,marginBottom:8}}>On shift now · {onShift.length}</div>
+    {onShift.filter(w=>w!==supervisor).map(w=><PersonCard key={w.id} w={w}/>)}
+
+    {/* Off shift */}
+    {offShift.length>0&&<>
+      <div style={{fontSize:10,fontFamily:T.mono,textTransform:"uppercase",letterSpacing:"0.06em",color:T.textTertiary,marginBottom:8,marginTop:16}}>Off shift</div>
+      {offShift.map(w=><PersonCard key={w.id} w={w}/>)}
+    </>}
+  </div>;
+}
+
+/* ── FLW Profile Card (slide-down) ── */
+function FLWProfile({me,ind,industry,onClose,onExit}){
+  const creds=industry==="manufacturing"
+    ?[{name:"Forklift Licence",pct:100,color:T.green},{name:"Confined Space",pct:72,color:T.amber},{name:"Chemical Handling",pct:45,color:T.rose}]
+    :industry==="qsr"
+    ?[{name:"Food Safety Cert",pct:100,color:T.green},{name:"Allergen Training",pct:80,color:T.amber},{name:"Fire Warden",pct:30,color:T.rose}]
+    :[{name:"Heavy Vehicle Licence",pct:100,color:T.green},{name:"Dangerous Goods",pct:65,color:T.amber},{name:"Fatigue Management",pct:40,color:T.rose}];
+
+  return<>
+    <div onClick={onClose} style={{position:"absolute",inset:0,zIndex:80,background:"rgba(0,0,0,0.2)"}}/>
+    <div style={{position:"absolute",top:90,left:12,right:12,zIndex:90,background:T.surface,borderRadius:18,padding:"22px 20px",boxShadow:"0 12px 40px rgba(0,0,0,0.15)",border:`1px solid ${T.border}`,animation:"fadeIn 0.25s ease"}}>
+      {/* Header */}
+      <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:18}}>
+        <div style={{width:48,height:48,borderRadius:"50%",background:ind.colorSoft,border:`2px solid ${ind.color}30`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,fontWeight:700,color:ind.color}}>
+          {me.name.split(" ").map(n=>n[0]).join("")}
+        </div>
+        <div>
+          <div style={{fontSize:16,fontWeight:600,letterSpacing:"-0.02em"}}>{me.name}</div>
+          <div style={{fontSize:12,color:T.textTertiary}}>{me.role} · {me.site||"Site A"}</div>
+        </div>
+      </div>
+
+      {/* Credentials */}
+      <div style={{fontSize:10,fontFamily:T.mono,textTransform:"uppercase",letterSpacing:"0.06em",color:T.textTertiary,marginBottom:10}}>Credentials</div>
+      <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:18}}>
+        {creds.map((c,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10}}>
+          <span style={{fontSize:12,fontWeight:500,width:120,flexShrink:0}}>{c.name}</span>
+          <div style={{flex:1,height:6,borderRadius:3,background:T.surfaceMuted,overflow:"hidden"}}>
+            <div style={{width:`${c.pct}%`,height:"100%",borderRadius:3,background:c.color}}/>
+          </div>
+          <span style={{fontSize:10,fontFamily:T.mono,fontWeight:600,color:c.color,minWidth:28,textAlign:"right"}}>{c.pct}%</span>
+        </div>)}
+      </div>
+
+      {/* Training due */}
+      <div style={{padding:"12px 14px",borderRadius:10,background:T.surfaceHover,border:`1px solid ${T.borderSubtle}`,marginBottom:18,display:"flex",alignItems:"center",gap:10}}>
+        {IC.calendar(T.textTertiary)}
+        <div>
+          <div style={{fontSize:12,fontWeight:500}}>1 training due</div>
+          <div style={{fontSize:11,color:T.textTertiary}}>Refresher course · Due in 5 days</div>
+        </div>
+      </div>
+
+      {/* Back to workspace */}
+      <div onClick={onExit} style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,padding:"10px",borderRadius:10,border:`1px solid ${T.border}`,cursor:"pointer",fontSize:12,fontWeight:500,color:T.textSecondary,transition:"all 0.15s"}} onMouseEnter={e=>{e.currentTarget.style.borderColor=T.accentBorder;e.currentTarget.style.color=T.text;}} onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.color=T.textSecondary;}}>
+        {IC.chevLeft(T.textSecondary,14)} Back to workspace
+      </div>
+    </div>
+  </>;
+}
+
 /* ═══ HASH ROUTING ═══ */
 function parseHash(){
   const h=(window.location.hash||"").replace(/^#\/?/,"");
@@ -8956,6 +9661,7 @@ function parseHash(){
   if(h==="home/chat"||h==="chat") return{phase:"workspace",page:"home",homeTab:"chat",appId:null};
   if(h==="home/dashboard"||h==="dashboard") return{phase:"workspace",page:"home",homeTab:"dashboard",appId:null};
   if(h==="home") return{phase:"workspace",page:"home",homeTab:"dashboard",appId:null};
+  if(h==="flw") return{phase:"flw",page:"home",homeTab:"dashboard",appId:null};
   /* App detail route: #app/:appId */
   if(h.startsWith("app/")){const aId=h.slice(4);return{phase:"workspace",page:"catalog",homeTab:"dashboard",appId:aId};}
   const validPages=["builder","connect","connectors","goals","people","catalog","tasks","score","registers"];
@@ -9100,6 +9806,11 @@ function App(){
     }}/>;
   }
 
+  /* ── FLW phase ── */
+  if(phase==="flw"){
+    return<FLWApp industry={onboardIndustry||"manufacturing"} onExit={()=>{setPhase("workspace");window.location.hash="#home/dashboard";}}/>;
+  }
+
   /* ── Onboarding phase ── */
   if(phase==="onboarding"){
     return<OnboardingFlow
@@ -9206,7 +9917,7 @@ function App(){
             <span style={{fontSize:12,fontWeight:600,color:"#B8962E",fontFamily:T.mono}}>{computeAggregateScore(selectedGoals).score}</span>
           </div>}
           <div style={{padding:"5px 12px",borderRadius:99,background:T.surfaceMuted,border:`1px solid ${T.border}`,fontSize:11,fontFamily:T.mono,color:T.textTertiary,display:"flex",alignItems:"center",gap:6,cursor:"pointer"}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>&#x2318;K</div>
-          <div style={{width:32,height:32,borderRadius:"50%",background:T.surfaceMuted,border:`2px solid ${T.surface}`,boxShadow:`0 0 0 1px ${T.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:600,color:T.textSecondary}}>S</div>
+          <div onClick={()=>{setPhase("flw");window.location.hash="#flw";}} style={{width:32,height:32,borderRadius:"50%",background:T.surfaceMuted,border:`2px solid ${T.surface}`,boxShadow:`0 0 0 1px ${T.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:600,color:T.textSecondary,cursor:"pointer",transition:"all 0.15s"}} title="Switch to frontline view">S</div>
         </div>
       </div>
 
