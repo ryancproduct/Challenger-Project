@@ -257,6 +257,7 @@ function App(){
       @keyframes cobDotBounce{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-5px);opacity:1}}
       @keyframes glowA{0%,100%{transform:translateX(-25%)}50%{transform:translateX(25%)}}
       @keyframes glowB{0%,100%{transform:translateX(25%) scale(1.1)}50%{transform:translateX(-25%) scale(0.9)}}
+      @keyframes checkPop{0%{transform:scale(0.5);opacity:0.5}60%{transform:scale(1.18);opacity:1}100%{transform:scale(1);opacity:1}}
       .wipe-in{animation:wipeReveal 0.7s cubic-bezier(0.4,0,0.2,1) forwards}
       .connector-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
       @media(max-width:500px){.connector-grid{grid-template-columns:1fr}}

@@ -4,21 +4,49 @@ function BuildMode(){
   const[input,setInput]=useState("");
   const[started,setStarted]=useState(false);
   const[exampleIdx,setExampleIdx]=useState(0);
+  const[phase,setPhase]=useState("enter"); // reset | enter | tick | hold | exit
+  const[animChecked,setAnimChecked]=useState(0);
   const msgsEnd=useRef(null);
 
   const EXAMPLES=[
-    {label:"Daily Audit",title:"Quality Inspection",pct:40,doneCount:4,items:["Check temperature logs","Inspect equipment seals","Verify cleaning records","Review staff hygiene","Check storage conditions","Inspect packaging integrity"]},
-    {label:"Safety Walk",title:"Floor Inspection",pct:60,doneCount:3,items:["Check fire exits clear","PPE compliance check","Verify spill stations","Inspect walkway markings","Emergency shower test","First aid kit inventory"]},
-    {label:"Shift Change",title:"Handover Report",pct:30,doneCount:2,items:["Production summary","Equipment status update","Open issues review","Material inventory check","Safety incidents log","Next shift priorities"]},
-    {label:"Training",title:"New Hire Onboarding",pct:50,doneCount:3,items:["Safety orientation","Badge activation","System login setup","Floor tour complete","Emergency procedures","Buddy assignment"]},
+    {label:"Daily Audit",title:"Quality Inspection",doneCount:4,items:["Check temperature logs","Inspect equipment seals","Verify cleaning records","Review staff hygiene","Check storage conditions","Inspect packaging integrity"]},
+    {label:"Safety Walk",title:"Floor Inspection",doneCount:3,items:["Check fire exits clear","PPE compliance check","Verify spill stations","Inspect walkway markings","Emergency shower test","First aid kit inventory"]},
+    {label:"Shift Change",title:"Handover Report",doneCount:2,items:["Production summary","Equipment status update","Open issues review","Material inventory check","Safety incidents log","Next shift priorities"]},
+    {label:"Training",title:"New Hire Onboarding",doneCount:3,items:["Safety orientation","Badge activation","System login setup","Floor tour complete","Emergency procedures","Buddy assignment"]},
   ];
 
-  /* Cycle examples only when idle */
+  /* Animated cycling — phase state machine */
   useEffect(()=>{
-    if(started)return;
-    const t=setInterval(()=>setExampleIdx(i=>(i+1)%EXAMPLES.length),4000);
-    return()=>clearInterval(t);
-  },[started]);
+    if(started) return;
+    let t;
+    const ex=EXAMPLES[exampleIdx];
+    switch(phase){
+      case "reset":
+        t=setTimeout(()=>setPhase("enter"),40);
+        break;
+      case "enter":
+        t=setTimeout(()=>setPhase("tick"),480);
+        break;
+      case "tick":
+        if(animChecked<ex.doneCount){
+          t=setTimeout(()=>setAnimChecked(c=>c+1),420);
+        } else {
+          t=setTimeout(()=>setPhase("hold"),400);
+        }
+        break;
+      case "hold":
+        t=setTimeout(()=>setPhase("exit"),1200);
+        break;
+      case "exit":
+        t=setTimeout(()=>{
+          setExampleIdx(i=>(i+1)%EXAMPLES.length);
+          setAnimChecked(0);
+          setPhase("reset");
+        },450);
+        break;
+    }
+    return()=>clearTimeout(t);
+  },[phase,animChecked,started,exampleIdx]);
 
   const doSend=()=>{
     if(!input.trim())return;
@@ -28,20 +56,38 @@ function BuildMode(){
   };
   useEffect(()=>{if(msgsEnd.current)msgsEnd.current.scrollIntoView({behavior:"smooth"});},[msgs]);
 
+  /* ── Computed animation values ── */
+  const ex=EXAMPLES[exampleIdx];
+  const animPct=ex.items.length>0?Math.round((animChecked/ex.items.length)*100):0;
+
+  /* Slide transform based on phase */
+  const slideStyle=phase==="reset"
+    ?{transform:"translateX(70px)",opacity:0,transition:"none"}
+    :phase==="enter"
+    ?{transform:"translateX(0)",opacity:1,transition:"transform 0.45s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease"}
+    :phase==="exit"
+    ?{transform:"translateX(-70px)",opacity:0,transition:"transform 0.4s cubic-bezier(0.55,0,1,0.45), opacity 0.3s ease"}
+    :{transform:"translateX(0)",opacity:1,transition:"transform 0.45s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease"};
+
   /* ── Phone screen content renderer ── */
-  const renderPhoneContent=(ex)=><>
+  const renderPhoneContent=()=><>
     <div style={{position:"absolute",top:10,left:"50%",transform:"translateX(-50%)",width:90,height:24,borderRadius:20,background:"#c5c5c8",zIndex:2}}/>
-    <div style={{padding:"44px 18px 12px",borderBottom:"1px solid #f0f0f0"}}>
-      <div style={{fontSize:10,color:"#999",fontFamily:T.mono,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:4}}>{ex.label}</div>
-      <div style={{fontSize:17,fontWeight:600,fontFamily:T.serif,letterSpacing:"-0.02em"}}>{ex.title}</div>
-      <div style={{marginTop:8}}><Bar pct={ex.pct} color={T.green} height={4}/></div>
-      <div style={{fontSize:10,color:T.textTertiary,marginTop:4}}>{ex.doneCount} of {ex.items.length} items complete</div>
-    </div>
-    <div style={{padding:"8px 14px",flex:1,overflowY:"auto"}}>
-      {ex.items.map((item,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"11px 6px",borderBottom:"1px solid #f5f5f5"}}>
-        <div style={{width:20,height:20,borderRadius:6,flexShrink:0,background:i<ex.doneCount?T.green:"transparent",border:i<ex.doneCount?"none":"1.5px solid #ddd",display:"flex",alignItems:"center",justifyContent:"center"}}>{i<ex.doneCount&&IC.check("#fff",10)}</div>
-        <span style={{fontSize:13,color:i<ex.doneCount?"#999":T.text,textDecoration:"none"}}>{item}</span>
-      </div>)}
+    <div style={{...slideStyle,display:"flex",flexDirection:"column",flex:1}}>
+      <div style={{padding:"44px 18px 12px",borderBottom:"1px solid #f0f0f0"}}>
+        <div style={{fontSize:10,color:"#999",fontFamily:T.mono,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:4}}>{ex.label}</div>
+        <div style={{fontSize:17,fontWeight:600,fontFamily:T.serif,letterSpacing:"-0.02em"}}>{ex.title}</div>
+        <div style={{marginTop:8}}><Bar pct={animPct} color={T.green} height={4}/></div>
+        <div style={{fontSize:10,color:T.textTertiary,marginTop:4}}>{animChecked} of {ex.items.length} items complete</div>
+      </div>
+      <div style={{padding:"8px 14px",flex:1,overflowY:"auto"}}>
+        {ex.items.map((item,i)=>{
+          const isChecked=i<animChecked;
+          return <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"11px 6px",borderBottom:"1px solid #f5f5f5"}}>
+            <div key={`${i}-${isChecked}`} style={{width:20,height:20,borderRadius:6,flexShrink:0,background:isChecked?T.green:"transparent",border:isChecked?"1.5px solid transparent":"1.5px solid #ddd",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:isChecked?`0 0 8px ${T.green}33`:"none",animation:isChecked?"checkPop 0.32s cubic-bezier(0.34,1.56,0.64,1)":"none"}}>{isChecked&&IC.check("#fff",10)}</div>
+            <span style={{fontSize:13,color:isChecked?"#aaa":T.text,transition:"color 0.3s ease"}}>{item}</span>
+          </div>;
+        })}
+      </div>
     </div>
     <div style={{padding:"8px 0 6px",display:"flex",justifyContent:"center"}}><div style={{width:120,height:4,borderRadius:2,background:"#d1d1d6"}}/></div>
   </>;
@@ -108,11 +154,7 @@ function BuildMode(){
 
       {/* Phone — always in DOM, transitions between peek and centered */}
       <div style={{transition:`transform ${DUR} ${EASE}`,transform:started?"translateY(0)":"translateY(44vh)"}}>
-        {renderPhoneShell(
-          EXAMPLES.map((ex,idx)=><div key={idx} style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",opacity:idx===exampleIdx?1:0,transition:"opacity 0.6s ease"}}>
-            {renderPhoneContent(ex)}
-          </div>)
-        )}
+        {renderPhoneShell(renderPhoneContent())}
       </div>
 
       {/* Bottom gradient — fades out when started */}
